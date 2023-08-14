@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html><head><title>Windows Server 2016中文版安装docker的详细步骤</title><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta property="og:title" content="Windows Server 2016中文版安装docker的详细步骤"/><meta property="og:description" content="实验环境： § 一台Windows Server 2016中文版，关闭防火墙，IP地址192.168.10.1/24 还需要一张网卡，需要连接外网，给Windows Server 2016下载更新文件 12 下载更新 § sconfig # 打开参数菜单 下载最新版的安装包，安装并重启 选择数字6，下载并安装更新，弹出黑色对话框后，选择A 让它下载更新并重启，此操作必须进行，否则后续安装会失败或者各种报错类似于linux各种软件版本依 赖 打开 powershell 以管理员方式运行 由于Windows Server 2016中文版不支持安装的NuGet，需要使用命令将原有的Tls一级，修改成二 级，才能安装NuGet服务 [System."/><meta property="og:image" content="https://four.quartz.jzhao.xyz/static/og-image.png"/><meta property="og:width" content="1200"/><meta property="og:height" content="675"/><link rel="icon" href="../../static/icon.png"/><meta name="description" content="实验环境： § 一台Windows Server 2016中文版，关闭防火墙，IP地址192.168.10.1/24 还需要一张网卡，需要连接外网，给Windows Server 2016下载更新文件 12 下载更新 § sconfig # 打开参数菜单 下载最新版的安装包，安装并重启 选择数字6，下载并安装更新，弹出黑色对话框后，选择A 让它下载更新并重启，此操作必须进行，否则后续安装会失败或者各种报错类似于linux各种软件版本依 赖 打开 powershell 以管理员方式运行 由于Windows Server 2016中文版不支持安装的NuGet，需要使用命令将原有的Tls一级，修改成二 级，才能安装NuGet服务 [System."/><meta name="generator" content="Quartz"/><link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com"/><link href="../../index.css" rel="stylesheet" type="text/css" spa-preserve/><link href="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css" rel="stylesheet" type="text/css" spa-preserve/><link href="https://fonts.googleapis.com/css2?family=IBM Plex Mono&amp;family=Schibsted Grotesk:wght@400;700&amp;family=Source Sans Pro:ital,wght@0,400;0,600;1,400;1,600&amp;display=swap" rel="stylesheet" type="text/css" spa-preserve/><script src="../../prescript.js" type="application/javascript" spa-preserve></script><script type="application/javascript" spa-preserve>const fetchData = fetch(`../../static/contentIndex.json`).then(data => data.json())</script></head><body data-slug="Windows/Windows-Server-2016中文版安装docker的详细步骤"><div id="quartz-root" class="page"><div id="quartz-body"><div class="left sidebar"><h1 class="page-title"><a href="../..">🪴 Quartz 4.0</a></h1><div class="spacer mobile-only"></div><div class="search"><div id="search-icon"><p>Search</p><div></div><svg tabindex="0" aria-labelledby="title desc" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.9 19.7"><title id="title">Search</title><desc id="desc">Search</desc><g class="search-path" fill="none"><path stroke-linecap="square" d="M18.5 18.3l-5.4-5.4"></path><circle cx="8" cy="8" r="7"></circle></g></svg></div><div id="search-container"><div id="search-space"><input autocomplete="off" id="search-bar" name="search" type="text" aria-label="Search for something" placeholder="Search for something"/><div id="results-container"></div></div></div></div><div class="darkmode"><input class="toggle" id="darkmode-toggle" type="checkbox" tabindex="-1"/><label id="toggle-label-light" for="darkmode-toggle" tabindex="-1"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="dayIcon" x="0px" y="0px" viewBox="0 0 35 35" style="enable-background:new 0 0 35 35;" xml:space="preserve"><title>Light mode</title><path d="M6,17.5C6,16.672,5.328,16,4.5,16h-3C0.672,16,0,16.672,0,17.5    S0.672,19,1.5,19h3C5.328,19,6,18.328,6,17.5z M7.5,26c-0.414,0-0.789,0.168-1.061,0.439l-2,2C4.168,28.711,4,29.086,4,29.5    C4,30.328,4.671,31,5.5,31c0.414,0,0.789-0.168,1.06-0.44l2-2C8.832,28.289,9,27.914,9,27.5C9,26.672,8.329,26,7.5,26z M17.5,6    C18.329,6,19,5.328,19,4.5v-3C19,0.672,18.329,0,17.5,0S16,0.672,16,1.5v3C16,5.328,16.671,6,17.5,6z M27.5,9    c0.414,0,0.789-0.168,1.06-0.439l2-2C30.832,6.289,31,5.914,31,5.5C31,4.672,30.329,4,29.5,4c-0.414,0-0.789,0.168-1.061,0.44    l-2,2C26.168,6.711,26,7.086,26,7.5C26,8.328,26.671,9,27.5,9z M6.439,8.561C6.711,8.832,7.086,9,7.5,9C8.328,9,9,8.328,9,7.5    c0-0.414-0.168-0.789-0.439-1.061l-2-2C6.289,4.168,5.914,4,5.5,4C4.672,4,4,4.672,4,5.5c0,0.414,0.168,0.789,0.439,1.06    L6.439,8.561z M33.5,16h-3c-0.828,0-1.5,0.672-1.5,1.5s0.672,1.5,1.5,1.5h3c0.828,0,1.5-0.672,1.5-1.5S34.328,16,33.5,16z     M28.561,26.439C28.289,26.168,27.914,26,27.5,26c-0.828,0-1.5,0.672-1.5,1.5c0,0.414,0.168,0.789,0.439,1.06l2,2    C28.711,30.832,29.086,31,29.5,31c0.828,0,1.5-0.672,1.5-1.5c0-0.414-0.168-0.789-0.439-1.061L28.561,26.439z M17.5,29    c-0.829,0-1.5,0.672-1.5,1.5v3c0,0.828,0.671,1.5,1.5,1.5s1.5-0.672,1.5-1.5v-3C19,29.672,18.329,29,17.5,29z M17.5,7    C11.71,7,7,11.71,7,17.5S11.71,28,17.5,28S28,23.29,28,17.5S23.29,7,17.5,7z M17.5,25c-4.136,0-7.5-3.364-7.5-7.5    c0-4.136,3.364-7.5,7.5-7.5c4.136,0,7.5,3.364,7.5,7.5C25,21.636,21.636,25,17.5,25z"></path></svg></label><label id="toggle-label-dark" for="darkmode-toggle" tabindex="-1"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="nightIcon" x="0px" y="0px" viewBox="0 0 100 100" style="enable-background='new 0 0 100 100'" xml:space="preserve"><title>Dark mode</title><path d="M96.76,66.458c-0.853-0.852-2.15-1.064-3.23-0.534c-6.063,2.991-12.858,4.571-19.655,4.571  C62.022,70.495,50.88,65.88,42.5,57.5C29.043,44.043,25.658,23.536,34.076,6.47c0.532-1.08,0.318-2.379-0.534-3.23  c-0.851-0.852-2.15-1.064-3.23-0.534c-4.918,2.427-9.375,5.619-13.246,9.491c-9.447,9.447-14.65,22.008-14.65,35.369  c0,13.36,5.203,25.921,14.65,35.368s22.008,14.65,35.368,14.65c13.361,0,25.921-5.203,35.369-14.65  c3.872-3.871,7.064-8.328,9.491-13.246C97.826,68.608,97.611,67.309,96.76,66.458z"></path></svg></label></div><div class="desktop-only"><button type="button" id="toc"><h3>Table of Contents</h3><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div id="toc-content"><ul class="overflow"><li class="depth-0"><a href="#实验环境" data-for="实验环境">实验环境：</a></li><li class="depth-0"><a href="#下载更新" data-for="下载更新">下载更新</a></li><li class="depth-0"><a href="#安装nuget服务" data-for="安装nuget服务">安装NuGet服务 </a></li><li class="depth-0"><a href="#总结" data-for="总结">总结</a></li></ul></div></div></div><div class="center"><div class="page-header"><div class="popover-hint"><h1 class="article-title">Windows Server 2016中文版安装docker的详细步骤</h1><p class="content-meta">Aug 08, 2023, 3 min read</p></div></div><article class="popover-hint"><h2 id="实验环境">实验环境：<a aria-hidden="true" tabindex="-1" href="#实验环境" class="internal"> §</a></h2>
+<p>一台Windows Server 2016中文版，关闭防火墙，IP地址192.168.10.1/24</p>
+<p>还需要一张网卡，需要连接外网，给Windows Server 2016下载更新文件 12</p>
+<h2 id="下载更新">下载更新<a aria-hidden="true" tabindex="-1" href="#下载更新" class="internal"> §</a></h2>
+<blockquote>
+<p>sconfig                # 打开参数菜单</p>
+</blockquote>
+<p><img src="../../Rsources/Assets/d10571585cd029d07b8b7be165a71108-2022071510284530.png" alt/></p>
+<p>下载最新版的安装包，安装并重启</p>
+<p><img src="../../Rsources/Assets/558ae7f429125e25199f16a88a9a9b22-2022071510284531.png" alt/></p>
+<p> 选择数字6，下载并安装更新，弹出黑色对话框后，选择A</p>
+<p><img src="../../Rsources/Assets/966c6db199f07f65ebb54b7048452313-2022071510284532.png" alt/></p>
+<p> 让它下载更新并重启，此操作必须进行，否则后续安装会失败或者各种报错类似于linux各种软件版本依 赖</p>
+<p>打开 powershell 以管理员方式运行</p>
+<p><img src="../../Rsources/Assets/c0e9db97ec426be85161d78d01c08f58-2022071510284533.jpg" alt/></p>
+<p><img src="../../Rsources/Assets/a87c8650f4c9c30e2b64c5a3a57e9182-2022071510284534.png" alt/></p>
+<p> 由于Windows Server 2016中文版不支持安装的NuGet，需要使用命令将原有的Tls一级，修改成二 级，才能安装NuGet服务</p>
+<div data-rehype-pretty-code-fragment><pre style="background-color:var(--shiki-color-background);" tabindex="0" data-language="plain" data-theme="default"><code data-language="plain" data-theme="default"><span data-line><span style="color:var(--shiki-color-text);">[System.Net.ServicePointManager]::SecurityProtocol =  </span></span>
+<span data-line><span style="color:var(--shiki-color-text);">[System.Net.SecurityProtocolType]::Tls12; #修改成二级</span></span></code></pre></div>
+<p><img src="../../Rsources/Assets/0f26799e36eb51e2cfb0bd7fa613717a-2022071510284635.png" alt/></p>
+<h2 id="安装nuget服务">安装NuGet服务 <a aria-hidden="true" tabindex="-1" href="#安装nuget服务" class="internal"> §</a></h2>
+<div data-rehype-pretty-code-fragment><pre style="background-color:var(--shiki-color-background);" tabindex="0" data-language="plain" data-theme="default"><code data-language="plain" data-theme="default"><span data-line><span style="color:var(--shiki-color-text);">Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force</span></span>
+<span data-line><span style="color:var(--shiki-color-text);">#指定 NuGet安装包最小版本</span></span></code></pre></div>
+<p><img src="../../Rsources/Assets/e397a6fe4208eab76463a22575fc90a9-2022071510284636.png" alt/></p>
+<div data-rehype-pretty-code-fragment><pre style="background-color:var(--shiki-color-background);" tabindex="0" data-language="plain" data-theme="default"><code data-language="plain" data-theme="default"><span data-line><span style="color:var(--shiki-color-text);">Install-Module -Name DockerMsftProvider -Force #安装docker模块</span></span></code></pre></div>
+<p><img src="../../Rsources/Assets/d222d99e1b11eb1b01804f63698b8bae-2022071510284637.png" alt/></p>
+<div data-rehype-pretty-code-fragment><pre style="background-color:var(--shiki-color-background);" tabindex="0" data-language="plain" data-theme="default"><code data-language="plain" data-theme="default"><span data-line><span style="color:var(--shiki-color-text);">Install-Package -Name docker -ProviderName DockerMsftProvider -Force #安装 docker包</span></span></code></pre></div>
+<p><img src="../../Rsources/Assets/db74754324f5be23f10e841a0f627e56-2022071510284638.png" alt/></p>
+<p> 注意：如果这一步没有安装成功的话，报错如下</p>
+<p><img src="../../Rsources/Assets/eafcbc6f6617d97850ce7debd471c1f9-2022071510284639.jpg" alt/></p>
+<p> 去C盘下面找到这个路径，如果是空白的，需要下载补丁包</p>
+<p><img src="../../Rsources/Assets/e198ba1f41316bcc7014a11a8819d116-2022071510284740.jpg" alt/></p>
+<p><img src="../../Rsources/Assets/a975e897b871eb5844226043918f74d5-2022071510284741.png" alt/></p>
+<div data-rehype-pretty-code-fragment><pre style="background-color:var(--shiki-color-background);" tabindex="0" data-language="plain" data-theme="default"><code data-language="plain" data-theme="default"><span data-line><span style="color:var(--shiki-color-text);">https://dockermsft.blob.core.windows.net/dockercontainer/docker-1-12-2-cs2-ws-beta.zip</span></span>
+<span data-line><span style="color:var(--shiki-color-text);">以上是补丁包文件，把它下载下来后放入刚刚空白的文件夹下</span></span></code></pre></div>
+<p><img src="../../Rsources/Assets/578ce1e995a095d31b6c5cf470ea24f8-2022071510284742.png" alt/></p>
+<p> 然后重新运行上面的docker包就可以安装了</p>
+<div data-rehype-pretty-code-fragment><pre style="background-color:var(--shiki-color-background);" tabindex="0" data-language="plain" data-theme="default"><code data-language="plain" data-theme="default"><span data-line><span style="color:var(--shiki-color-text);">Restart-Computer -Force #安装完成后重启计算机生效</span></span></code></pre></div>
+<p><img src="../../Rsources/Assets/b26e5ff301aa1fde910f6cd9a0fbb056-2022071510284743.png" alt/></p>
+<p> 重启好了之后，打开powershell输入<code>docker info</code></p>
+<p><img src="../../Rsources/Assets/c4e5dc8d95d36e53e31a76a0a2e10b9e-2022071510284744.jpg" alt/></p>
+<p><img src="../../Rsources/Assets/dbe90a144c77259f08ae5e40e9b6d5d6-2022071510284745.png" alt/></p>
+<div data-rehype-pretty-code-fragment><pre style="background-color:var(--shiki-color-background);" tabindex="0" data-language="plain" data-theme="default"><code data-language="plain" data-theme="default"><span data-line><span style="color:var(--shiki-color-text);">docker version #查看docker版本</span></span></code></pre></div>
+<p><img src="../../Rsources/Assets/0861d539f1b8020656c5fa417f473d8b-2022071510284846.jpg" alt/></p>
+<p>docker安装就完成了</p>
+<h2 id="总结">总结<a aria-hidden="true" tabindex="-1" href="#总结" class="internal"> §</a></h2>
+<p>到此这篇关于Windows Server 2016中文版安装docker的文章就介绍到这了,更多相关Windows Server安装docker内容请搜索脚本之家以前的文章或继续浏览下面的相关文章希望大家以后多多支持脚本之家！</p>
+<p><strong>您可能感兴趣的文章:</strong></p>
+<ul>
+<li><a href="https://www.jb51.net/article/163501.htm" title="windows server 2016安装docker的方法步骤" class="external">windows server 2016安装docker的方法步骤</a></li>
+<li><a href="https://www.jb51.net/article/223961.htm" title="Windows Server 2016 安装 Docker的过程及遇到问题" class="external">Windows Server 2016 安装 Docker的过程及遇到问题</a></li>
+<li><a href="https://www.jb51.net/article/245184.htm" title="Windows Server 2012 R2 安装 Docker的详细步骤" class="external">Windows Server 2012 R2 安装 Docker的详细步骤</a></li>
+</ul></article></div><div class="right sidebar"><div class="graph"><h3>Graph View</h3><div class="graph-outer"><div id="graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:1,&quot;scale&quot;:1.1,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.3,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1}"></div><svg version="1.1" id="global-graph-icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 55 55" fill="currentColor" xml:space="preserve"><path d="M49,0c-3.309,0-6,2.691-6,6c0,1.035,0.263,2.009,0.726,2.86l-9.829,9.829C32.542,17.634,30.846,17,29,17
+	s-3.542,0.634-4.898,1.688l-7.669-7.669C16.785,10.424,17,9.74,17,9c0-2.206-1.794-4-4-4S9,6.794,9,9s1.794,4,4,4
+	c0.74,0,1.424-0.215,2.019-0.567l7.669,7.669C21.634,21.458,21,23.154,21,25s0.634,3.542,1.688,4.897L10.024,42.562
+	C8.958,41.595,7.549,41,6,41c-3.309,0-6,2.691-6,6s2.691,6,6,6s6-2.691,6-6c0-1.035-0.263-2.009-0.726-2.86l12.829-12.829
+	c1.106,0.86,2.44,1.436,3.898,1.619v10.16c-2.833,0.478-5,2.942-5,5.91c0,3.309,2.691,6,6,6s6-2.691,6-6c0-2.967-2.167-5.431-5-5.91
+	v-10.16c1.458-0.183,2.792-0.759,3.898-1.619l7.669,7.669C41.215,39.576,41,40.26,41,41c0,2.206,1.794,4,4,4s4-1.794,4-4
+	s-1.794-4-4-4c-0.74,0-1.424,0.215-2.019,0.567l-7.669-7.669C36.366,28.542,37,26.846,37,25s-0.634-3.542-1.688-4.897l9.665-9.665
+	C46.042,11.405,47.451,12,49,12c3.309,0,6-2.691,6-6S52.309,0,49,0z M11,9c0-1.103,0.897-2,2-2s2,0.897,2,2s-0.897,2-2,2
+	S11,10.103,11,9z M6,51c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S8.206,51,6,51z M33,49c0,2.206-1.794,4-4,4s-4-1.794-4-4
+	s1.794-4,4-4S33,46.794,33,49z M29,31c-3.309,0-6-2.691-6-6s2.691-6,6-6s6,2.691,6,6S32.309,31,29,31z M47,41c0,1.103-0.897,2-2,2
+	s-2-0.897-2-2s0.897-2,2-2S47,39.897,47,41z M49,10c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S51.206,10,49,10z"></path></svg></div><div id="global-graph-outer"><div id="global-graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:-1,&quot;scale&quot;:0.9,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.3,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1}"></div></div></div><div class="backlinks"><h3>Backlinks</h3><ul class="overflow"><li>No backlinks found</li></ul></div></div></div><footer><hr/><p>Created with <a href="https://quartz.jzhao.xyz/">Quartz v4.0.7</a>, © 2023</p><ul><li><a href="https://github.com/jackyzha0/quartz">GitHub</a></li><li><a href="https://discord.gg/cRFFHYye7t">Discord Community</a></li></ul></footer></div></body><script type="application/javascript">// quartz/components/scripts/quartz/components/scripts/callout.inline.ts
+function toggleCallout() {
+  const outerBlock = this.parentElement;
+  outerBlock.classList.toggle(`is-collapsed`);
+  const collapsed = outerBlock.classList.contains(`is-collapsed`);
+  const height = collapsed ? this.scrollHeight : outerBlock.scrollHeight;
+  outerBlock.style.maxHeight = height + `px`;
+  let current = outerBlock;
+  let parent = outerBlock.parentElement;
+  while (parent) {
+    if (!parent.classList.contains(`callout`)) {
+      return;
+    }
+    const collapsed2 = parent.classList.contains(`is-collapsed`);
+    const height2 = collapsed2 ? parent.scrollHeight : parent.scrollHeight + current.scrollHeight;
+    parent.style.maxHeight = height2 + `px`;
+    current = parent;
+    parent = parent.parentElement;
+  }
+}
+function setupCallout() {
+  const collapsible = document.getElementsByClassName(
+    `callout is-collapsible`
+  );
+  for (const div of collapsible) {
+    const title = div.firstElementChild;
+    if (title) {
+      title.removeEventListener(`click`, toggleCallout);
+      title.addEventListener(`click`, toggleCallout);
+      const collapsed = div.classList.contains(`is-collapsed`);
+      const height = collapsed ? title.scrollHeight : div.scrollHeight;
+      div.style.maxHeight = height + `px`;
+    }
+  }
+}
+document.addEventListener(`nav`, setupCallout);
+window.addEventListener(`resize`, setupCallout);
+</script><script type="module">
+          import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.esm.min.mjs';
+          const darkMode = document.documentElement.getAttribute('saved-theme') === 'dark'
+          mermaid.initialize({ 
+            startOnLoad: false,
+            securityLevel: 'loose',
+            theme: darkMode ? 'dark' : 'default'
+          });
+          document.addEventListener('nav', async () => {
+            await mermaid.run({
+              querySelector: '.mermaid'
+            })
+          });
+          </script><script src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/contrib/copy-tex.min.js" type="application/javascript"></script><script type="application/javascript">
+          const socket = new WebSocket('ws://localhost:3001')
+          socket.addEventListener('message', () => document.location.reload())
+        </script><script src="../../postscript.js" type="module"></script></html>

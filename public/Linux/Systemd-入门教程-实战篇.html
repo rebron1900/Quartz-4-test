@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html><head><title>Systemd 入门教程：实战篇</title><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta property="og:title" content="Systemd 入门教程：实战篇"/><meta property="og:description" content="上一篇文章，我介绍了 Systemd 的主要命令，今天介绍如何使用它完成一些基本的任务。 一、开机启动 § 对于那些支持 Systemd 的软件，安装的时候，会自动在/usr/lib/systemd/system目录添加一个配置文件。 如果你想让该软件开机启动，就执行下面的命令（以httpd.service为例）。 $ sudo systemctl enable httpd 上面的命令相当于在/etc/systemd/system目录添加一个符号链接，指向/usr/lib/systemd/system里面的httpd."/><meta property="og:image" content="https://four.quartz.jzhao.xyz/static/og-image.png"/><meta property="og:width" content="1200"/><meta property="og:height" content="675"/><link rel="icon" href="../../static/icon.png"/><meta name="description" content="上一篇文章，我介绍了 Systemd 的主要命令，今天介绍如何使用它完成一些基本的任务。 一、开机启动 § 对于那些支持 Systemd 的软件，安装的时候，会自动在/usr/lib/systemd/system目录添加一个配置文件。 如果你想让该软件开机启动，就执行下面的命令（以httpd.service为例）。 $ sudo systemctl enable httpd 上面的命令相当于在/etc/systemd/system目录添加一个符号链接，指向/usr/lib/systemd/system里面的httpd."/><meta name="generator" content="Quartz"/><link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com"/><link href="../../index.css" rel="stylesheet" type="text/css" spa-preserve/><link href="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css" rel="stylesheet" type="text/css" spa-preserve/><link href="https://fonts.googleapis.com/css2?family=IBM Plex Mono&amp;family=Schibsted Grotesk:wght@400;700&amp;family=Source Sans Pro:ital,wght@0,400;0,600;1,400;1,600&amp;display=swap" rel="stylesheet" type="text/css" spa-preserve/><script src="../../prescript.js" type="application/javascript" spa-preserve></script><script type="application/javascript" spa-preserve>const fetchData = fetch(`../../static/contentIndex.json`).then(data => data.json())</script></head><body data-slug="Linux/Systemd-入门教程-实战篇"><div id="quartz-root" class="page"><div id="quartz-body"><div class="left sidebar"><h1 class="page-title"><a href="../..">🪴 Quartz 4.0</a></h1><div class="spacer mobile-only"></div><div class="search"><div id="search-icon"><p>Search</p><div></div><svg tabindex="0" aria-labelledby="title desc" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.9 19.7"><title id="title">Search</title><desc id="desc">Search</desc><g class="search-path" fill="none"><path stroke-linecap="square" d="M18.5 18.3l-5.4-5.4"></path><circle cx="8" cy="8" r="7"></circle></g></svg></div><div id="search-container"><div id="search-space"><input autocomplete="off" id="search-bar" name="search" type="text" aria-label="Search for something" placeholder="Search for something"/><div id="results-container"></div></div></div></div><div class="darkmode"><input class="toggle" id="darkmode-toggle" type="checkbox" tabindex="-1"/><label id="toggle-label-light" for="darkmode-toggle" tabindex="-1"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="dayIcon" x="0px" y="0px" viewBox="0 0 35 35" style="enable-background:new 0 0 35 35;" xml:space="preserve"><title>Light mode</title><path d="M6,17.5C6,16.672,5.328,16,4.5,16h-3C0.672,16,0,16.672,0,17.5    S0.672,19,1.5,19h3C5.328,19,6,18.328,6,17.5z M7.5,26c-0.414,0-0.789,0.168-1.061,0.439l-2,2C4.168,28.711,4,29.086,4,29.5    C4,30.328,4.671,31,5.5,31c0.414,0,0.789-0.168,1.06-0.44l2-2C8.832,28.289,9,27.914,9,27.5C9,26.672,8.329,26,7.5,26z M17.5,6    C18.329,6,19,5.328,19,4.5v-3C19,0.672,18.329,0,17.5,0S16,0.672,16,1.5v3C16,5.328,16.671,6,17.5,6z M27.5,9    c0.414,0,0.789-0.168,1.06-0.439l2-2C30.832,6.289,31,5.914,31,5.5C31,4.672,30.329,4,29.5,4c-0.414,0-0.789,0.168-1.061,0.44    l-2,2C26.168,6.711,26,7.086,26,7.5C26,8.328,26.671,9,27.5,9z M6.439,8.561C6.711,8.832,7.086,9,7.5,9C8.328,9,9,8.328,9,7.5    c0-0.414-0.168-0.789-0.439-1.061l-2-2C6.289,4.168,5.914,4,5.5,4C4.672,4,4,4.672,4,5.5c0,0.414,0.168,0.789,0.439,1.06    L6.439,8.561z M33.5,16h-3c-0.828,0-1.5,0.672-1.5,1.5s0.672,1.5,1.5,1.5h3c0.828,0,1.5-0.672,1.5-1.5S34.328,16,33.5,16z     M28.561,26.439C28.289,26.168,27.914,26,27.5,26c-0.828,0-1.5,0.672-1.5,1.5c0,0.414,0.168,0.789,0.439,1.06l2,2    C28.711,30.832,29.086,31,29.5,31c0.828,0,1.5-0.672,1.5-1.5c0-0.414-0.168-0.789-0.439-1.061L28.561,26.439z M17.5,29    c-0.829,0-1.5,0.672-1.5,1.5v3c0,0.828,0.671,1.5,1.5,1.5s1.5-0.672,1.5-1.5v-3C19,29.672,18.329,29,17.5,29z M17.5,7    C11.71,7,7,11.71,7,17.5S11.71,28,17.5,28S28,23.29,28,17.5S23.29,7,17.5,7z M17.5,25c-4.136,0-7.5-3.364-7.5-7.5    c0-4.136,3.364-7.5,7.5-7.5c4.136,0,7.5,3.364,7.5,7.5C25,21.636,21.636,25,17.5,25z"></path></svg></label><label id="toggle-label-dark" for="darkmode-toggle" tabindex="-1"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="nightIcon" x="0px" y="0px" viewBox="0 0 100 100" style="enable-background='new 0 0 100 100'" xml:space="preserve"><title>Dark mode</title><path d="M96.76,66.458c-0.853-0.852-2.15-1.064-3.23-0.534c-6.063,2.991-12.858,4.571-19.655,4.571  C62.022,70.495,50.88,65.88,42.5,57.5C29.043,44.043,25.658,23.536,34.076,6.47c0.532-1.08,0.318-2.379-0.534-3.23  c-0.851-0.852-2.15-1.064-3.23-0.534c-4.918,2.427-9.375,5.619-13.246,9.491c-9.447,9.447-14.65,22.008-14.65,35.369  c0,13.36,5.203,25.921,14.65,35.368s22.008,14.65,35.368,14.65c13.361,0,25.921-5.203,35.369-14.65  c3.872-3.871,7.064-8.328,9.491-13.246C97.826,68.608,97.611,67.309,96.76,66.458z"></path></svg></label></div><div class="desktop-only"><button type="button" id="toc"><h3>Table of Contents</h3><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div id="toc-content"><ul class="overflow"><li class="depth-0"><a href="#一开机启动" data-for="一开机启动">一、开机启动</a></li><li class="depth-0"><a href="#二启动服务" data-for="二启动服务">二、启动服务</a></li><li class="depth-0"><a href="#三停止服务" data-for="三停止服务">三、停止服务</a></li><li class="depth-0"><a href="#四读懂配置文件" data-for="四读懂配置文件">四、读懂配置文件</a></li><li class="depth-0"><a href="#五-unit-区块启动顺序与依赖关系" data-for="五-unit-区块启动顺序与依赖关系">五、 [Unit] 区块：启动顺序与依赖关系。</a></li><li class="depth-0"><a href="#六service-区块启动行为" data-for="六service-区块启动行为">六、[Service] 区块：启动行为</a></li><li class="depth-1"><a href="#61-启动命令" data-for="61-启动命令">6.1 启动命令</a></li><li class="depth-1"><a href="#62-启动类型" data-for="62-启动类型">6.2 启动类型</a></li><li class="depth-1"><a href="#63-重启行为" data-for="63-重启行为">6.3 重启行为</a></li><li class="depth-0"><a href="#七install-区块" data-for="七install-区块">七、[Install] 区块</a></li><li class="depth-0"><a href="#八target-的配置文件" data-for="八target-的配置文件">八、Target 的配置文件</a></li><li class="depth-0"><a href="#九修改配置文件后重启" data-for="九修改配置文件后重启">九、修改配置文件后重启</a></li></ul></div></div></div><div class="center"><div class="page-header"><div class="popover-hint"><h1 class="article-title">Systemd 入门教程：实战篇</h1><p class="content-meta">Aug 05, 2023, 14 min read</p><ul class="tags"><li><a href="../../tags/linux" class="internal tag-link">#linux</a></li></ul></div></div><article class="popover-hint"><p>上一篇文章，我介绍了 Systemd 的<a href="https://www.ruanyifeng.com/blog/2016/03/systemd-tutorial-commands.html" class="external">主要命令</a>，今天介绍如何使用它完成一些基本的任务。</p>
+<p><img src="../../Rsources/Assets/6f33358eb4a09655f01bed296fb25ab5-bg2016030801.jpg" alt/></p>
+<h2 id="一开机启动">一、开机启动<a aria-hidden="true" tabindex="-1" href="#一开机启动" class="internal"> §</a></h2>
+<p>对于那些支持 Systemd 的软件，安装的时候，会自动在<code>/usr/lib/systemd/system</code>目录添加一个配置文件。</p>
+<p>如果你想让该软件开机启动，就执行下面的命令（以<code>httpd.service</code>为例）。</p>
+<div data-rehype-pretty-code-fragment><pre style="background-color:var(--shiki-color-background);" tabindex="0" data-language="bash" data-theme="default"><code data-language="bash" data-theme="default"><span data-line><span style="color:var(--shiki-token-function);">$</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">sudo</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">systemctl</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">enable</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">httpd</span></span></code></pre></div>
+<p>上面的命令相当于在<code>/etc/systemd/system</code>目录添加一个符号链接，指向<code>/usr/lib/systemd/system</code>里面的<code>httpd.service</code>文件。</p>
+<p>这是因为开机时，<code>Systemd</code>只执行<code>/etc/systemd/system</code>目录里面的配置文件。这也意味着，如果把修改后的配置文件放在该目录，就可以达到覆盖原始配置的效果。</p>
+<h2 id="二启动服务">二、启动服务<a aria-hidden="true" tabindex="-1" href="#二启动服务" class="internal"> §</a></h2>
+<p>设置开机启动以后，软件并不会立即启动，必须等到下一次开机。如果想现在就运行该软件，那么要执行<code>systemctl start</code>命令。</p>
+<blockquote>
+<div data-rehype-pretty-code-fragment><pre style="background-color:var(--shiki-color-background);" tabindex="0" data-language="bash" data-theme="default"><code data-language="bash" data-theme="default"><span data-line> </span>
+<span data-line><span style="color:var(--shiki-token-function);">$</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">sudo</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">systemctl</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">start</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">httpd</span></span></code></pre></div>
+</blockquote>
+<p>执行上面的命令以后，有可能启动失败，因此要用<code>systemctl status</code>命令查看一下该服务的状态。</p>
+<blockquote>
+<div data-rehype-pretty-code-fragment><pre style="background-color:var(--shiki-color-background);" tabindex="0" data-language="bash" data-theme="default"><code data-language="bash" data-theme="default"><span data-line> </span>
+<span data-line><span style="color:var(--shiki-token-function);">$</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">sudo</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">systemctl</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">status</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">httpd</span></span>
+<span data-line> </span>
+<span data-line><span style="color:var(--shiki-token-function);">httpd.service</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">-</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">The</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">Apache</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">HTTP</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">Server</span></span>
+<span data-line><span style="color:var(--shiki-color-text);">   </span><span style="color:var(--shiki-token-function);">Loaded:</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">loaded</span><span style="color:var(--shiki-color-text);"> (/usr/lib/systemd/system/httpd.service; </span><span style="color:var(--shiki-token-function);">enabled</span><span style="color:var(--shiki-color-text);">)</span></span>
+<span data-line><span style="color:var(--shiki-color-text);">   </span><span style="color:var(--shiki-token-function);">Active:</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">active</span><span style="color:var(--shiki-color-text);"> (running) since 金 2014-12-05 12:18:22 JST; </span><span style="color:var(--shiki-token-function);">7min</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">ago</span></span>
+<span data-line><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-function);">Main</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">PID:</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-constant);">4349</span><span style="color:var(--shiki-color-text);"> (httpd)</span></span>
+<span data-line><span style="color:var(--shiki-color-text);">   </span><span style="color:var(--shiki-token-function);">Status:</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string-expression);">&quot;Total requests: 1; Current requests/sec: 0; Current traffic:   0 B/sec&quot;</span></span>
+<span data-line><span style="color:var(--shiki-color-text);">   </span><span style="color:var(--shiki-token-function);">CGroup:</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">/system.slice/httpd.service</span></span>
+<span data-line><span style="color:var(--shiki-color-text);">           </span><span style="color:var(--shiki-token-function);">├─4349</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">/usr/sbin/httpd</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">-DFOREGROUND</span></span>
+<span data-line><span style="color:var(--shiki-color-text);">           </span><span style="color:var(--shiki-token-function);">├─4350</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">/usr/sbin/httpd</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">-DFOREGROUND</span></span>
+<span data-line><span style="color:var(--shiki-color-text);">           </span><span style="color:var(--shiki-token-function);">├─4351</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">/usr/sbin/httpd</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">-DFOREGROUND</span></span>
+<span data-line><span style="color:var(--shiki-color-text);">           </span><span style="color:var(--shiki-token-function);">├─4352</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">/usr/sbin/httpd</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">-DFOREGROUND</span></span>
+<span data-line><span style="color:var(--shiki-color-text);">           </span><span style="color:var(--shiki-token-function);">├─4353</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">/usr/sbin/httpd</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">-DFOREGROUND</span></span>
+<span data-line><span style="color:var(--shiki-color-text);">           </span><span style="color:var(--shiki-token-function);">└─4354</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">/usr/sbin/httpd</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">-DFOREGROUND</span></span>
+<span data-line> </span>
+<span data-line><span style="color:var(--shiki-token-function);">12月</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-constant);">05</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-constant);">12</span><span style="color:var(--shiki-token-string);">:18:22</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">localhost.localdomain</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">systemd[</span><span style="color:var(--shiki-token-constant);">1</span><span style="color:var(--shiki-token-string);">]:</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">Starting</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">The</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">Apache</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">HTTP</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">Server...</span></span>
+<span data-line><span style="color:var(--shiki-token-function);">12月</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-constant);">05</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-constant);">12</span><span style="color:var(--shiki-token-string);">:18:22</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">localhost.localdomain</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">systemd[</span><span style="color:var(--shiki-token-constant);">1</span><span style="color:var(--shiki-token-string);">]:</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">Started</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">The</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">Apache</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">HTTP</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">Server.</span></span>
+<span data-line><span style="color:var(--shiki-token-function);">12月</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-constant);">05</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-constant);">12</span><span style="color:var(--shiki-token-string);">:22:40</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">localhost.localdomain</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">systemd[</span><span style="color:var(--shiki-token-constant);">1</span><span style="color:var(--shiki-token-string);">]:</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">Started</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">The</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">Apache</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">HTTP</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">Server.</span></span></code></pre></div>
+</blockquote>
+<p>上面的输出结果含义如下。</p>
+<blockquote>
+<ul>
+<li><code>Loaded</code>行：配置文件的位置，是否设为开机启动</li>
+<li><code>Active</code>行：表示正在运行</li>
+<li><code>Main PID</code>行：主进程ID</li>
+<li><code>Status</code>行：由应用本身（这里是 httpd ）提供的软件当前状态</li>
+<li><code>CGroup</code>块：应用的所有子进程</li>
+<li>日志块：应用的日志</li>
+</ul>
+</blockquote>
+<h2 id="三停止服务">三、停止服务<a aria-hidden="true" tabindex="-1" href="#三停止服务" class="internal"> §</a></h2>
+<p>终止正在运行的服务，需要执行<code>systemctl stop</code>命令。</p>
+<blockquote>
+<div data-rehype-pretty-code-fragment><pre style="background-color:var(--shiki-color-background);" tabindex="0" data-language="bash" data-theme="default"><code data-language="bash" data-theme="default"><span data-line> </span>
+<span data-line><span style="color:var(--shiki-token-function);">$</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">sudo</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">systemctl</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">stop</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">httpd.service</span></span></code></pre></div>
+</blockquote>
+<p>有时候，该命令可能没有响应，服务停不下来。这时候就不得不”杀进程”了，向正在运行的进程发出<code>kill</code>信号。</p>
+<blockquote>
+<div data-rehype-pretty-code-fragment><pre style="background-color:var(--shiki-color-background);" tabindex="0" data-language="bash" data-theme="default"><code data-language="bash" data-theme="default"><span data-line> </span>
+<span data-line><span style="color:var(--shiki-token-function);">$</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">sudo</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">systemctl</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">kill</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">httpd.service</span></span></code></pre></div>
+</blockquote>
+<p>此外，重启服务要执行<code>systemctl restart</code>命令。</p>
+<blockquote>
+<div data-rehype-pretty-code-fragment><pre style="background-color:var(--shiki-color-background);" tabindex="0" data-language="bash" data-theme="default"><code data-language="bash" data-theme="default"><span data-line> </span>
+<span data-line><span style="color:var(--shiki-token-function);">$</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">sudo</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">systemctl</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">restart</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">httpd.service</span></span></code></pre></div>
+</blockquote>
+<h2 id="四读懂配置文件">四、读懂配置文件<a aria-hidden="true" tabindex="-1" href="#四读懂配置文件" class="internal"> §</a></h2>
+<p>一个服务怎么启动，完全由它的配置文件决定。下面就来看，配置文件有些什么内容。</p>
+<p>前面说过，配置文件主要放在<code>/usr/lib/systemd/system</code>目录，也可能在<code>/etc/systemd/system</code>目录。找到配置文件以后，使用文本编辑器打开即可。</p>
+<p><code>systemctl cat</code>命令可以用来查看配置文件，下面以<code>sshd.service</code>文件为例，它的作用是启动一个 SSH 服务器，供其他用户以 SSH 方式登录。</p>
+<blockquote>
+<div data-rehype-pretty-code-fragment><pre style="background-color:var(--shiki-color-background);" tabindex="0" data-language="bash" data-theme="default"><code data-language="bash" data-theme="default"><span data-line> </span>
+<span data-line><span style="color:var(--shiki-token-function);">$</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">systemctl</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">cat</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">sshd.service</span></span>
+<span data-line> </span>
+<span data-line><span style="color:var(--shiki-color-text);">[Unit]</span></span>
+<span data-line><span style="color:var(--shiki-color-text);">Description</span><span style="color:var(--shiki-token-keyword);">=</span><span style="color:var(--shiki-token-string);">OpenSSH</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-function);">server</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">daemon</span></span>
+<span data-line><span style="color:var(--shiki-color-text);">Documentation</span><span style="color:var(--shiki-token-keyword);">=</span><span style="color:var(--shiki-token-string);">man:sshd</span><span style="color:var(--shiki-color-text);">(</span><span style="color:var(--shiki-token-function);">8</span><span style="color:var(--shiki-color-text);">) </span><span style="color:var(--shiki-token-function);">man:sshd_config(5</span><span style="color:var(--shiki-color-text);">)</span></span>
+<span data-line><span style="color:var(--shiki-color-text);">After</span><span style="color:var(--shiki-token-keyword);">=</span><span style="color:var(--shiki-token-string);">network.target</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-function);">sshd-keygen.service</span></span>
+<span data-line><span style="color:var(--shiki-color-text);">Wants</span><span style="color:var(--shiki-token-keyword);">=</span><span style="color:var(--shiki-token-string);">sshd-keygen.service</span></span>
+<span data-line> </span>
+<span data-line><span style="color:var(--shiki-color-text);">[Service]</span></span>
+<span data-line><span style="color:var(--shiki-color-text);">EnvironmentFile</span><span style="color:var(--shiki-token-keyword);">=</span><span style="color:var(--shiki-token-string);">/etc/sysconfig/sshd</span></span>
+<span data-line><span style="color:var(--shiki-color-text);">ExecStart</span><span style="color:var(--shiki-token-keyword);">=</span><span style="color:var(--shiki-token-string);">/usr/sbin/sshd</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-function);">-D</span><span style="color:var(--shiki-color-text);"> $OPTIONS</span></span>
+<span data-line><span style="color:var(--shiki-color-text);">ExecReload</span><span style="color:var(--shiki-token-keyword);">=</span><span style="color:var(--shiki-token-string);">/bin/kill</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-function);">-HUP</span><span style="color:var(--shiki-color-text);"> $MAINPID</span></span>
+<span data-line><span style="color:var(--shiki-color-text);">Type</span><span style="color:var(--shiki-token-keyword);">=</span><span style="color:var(--shiki-token-string);">simple</span></span>
+<span data-line><span style="color:var(--shiki-color-text);">KillMode</span><span style="color:var(--shiki-token-keyword);">=</span><span style="color:var(--shiki-token-string);">process</span></span>
+<span data-line><span style="color:var(--shiki-color-text);">Restart</span><span style="color:var(--shiki-token-keyword);">=</span><span style="color:var(--shiki-token-string);">on-failure</span></span>
+<span data-line><span style="color:var(--shiki-color-text);">RestartSec</span><span style="color:var(--shiki-token-keyword);">=</span><span style="color:var(--shiki-token-constant);">42</span><span style="color:var(--shiki-token-string);">s</span></span>
+<span data-line> </span>
+<span data-line><span style="color:var(--shiki-color-text);">[Install]</span></span>
+<span data-line><span style="color:var(--shiki-color-text);">WantedBy</span><span style="color:var(--shiki-token-keyword);">=</span><span style="color:var(--shiki-token-string);">multi-user.target</span></span></code></pre></div>
+</blockquote>
+<p>可以看到，配置文件分成几个区块，每个区块包含若干条键值对。</p>
+<p>下面依次解释每个区块的内容。</p>
+<h2 id="五-unit-区块启动顺序与依赖关系">五、 [Unit] 区块：启动顺序与依赖关系。<a aria-hidden="true" tabindex="-1" href="#五-unit-区块启动顺序与依赖关系" class="internal"> §</a></h2>
+<p><code>Unit</code>区块的<code>Description</code>字段给出当前服务的简单描述，<code>Documentation</code>字段给出文档位置。</p>
+<p>接下来的设置是启动顺序和依赖关系，这个比较重要。</p>
+<blockquote>
+<p><code>After</code>字段：表示如果<code>network.target</code>或<code>sshd-keygen.service</code>需要启动，那么<code>sshd.service</code>应该在它们之后启动。</p>
+</blockquote>
+<p>相应地，还有一个<code>Before</code>字段，定义<code>sshd.service</code>应该在哪些服务之前启动。</p>
+<p>注意，<code>After</code>和<code>Before</code>字段只涉及启动顺序，不涉及依赖关系。</p>
+<p>举例来说，某 Web 应用需要 postgresql 数据库储存数据。在配置文件中，它只定义要在 postgresql 之后启动，而没有定义依赖 postgresql 。上线后，由于某种原因，postgresql 需要重新启动，在停止服务期间，该 Web 应用就会无法建立数据库连接。</p>
+<p>设置依赖关系，需要使用<code>Wants</code>字段和<code>Requires</code>字段。</p>
+<blockquote>
+<p><code>Wants</code>字段：表示<code>sshd.service</code>与<code>sshd-keygen.service</code>之间存在”弱依赖”关系，即如果”sshd-keygen.service”启动失败或停止运行，不影响<code>sshd.service</code>继续执行。</p>
+</blockquote>
+<p><code>Requires</code>字段则表示”强依赖”关系，即如果该服务启动失败或异常退出，那么<code>sshd.service</code>也必须退出。</p>
+<p>注意，<code>Wants</code>字段与<code>Requires</code>字段只涉及依赖关系，与启动顺序无关，默认情况下是同时启动的。</p>
+<h2 id="六service-区块启动行为">六、[Service] 区块：启动行为<a aria-hidden="true" tabindex="-1" href="#六service-区块启动行为" class="internal"> §</a></h2>
+<p><code>Service</code>区块定义如何启动当前服务。</p>
+<h3 id="61-启动命令">6.1 启动命令<a aria-hidden="true" tabindex="-1" href="#61-启动命令" class="internal"> §</a></h3>
+<p>许多软件都有自己的环境参数文件，该文件可以用<code>EnvironmentFile</code>字段读取。</p>
+<blockquote>
+<p><code>EnvironmentFile</code>字段：指定当前服务的环境参数文件。该文件内部的<code>key=value</code>键值对，可以用<code>$key</code>的形式，在当前配置文件中获取。</p>
+</blockquote>
+<p>上面的例子中，sshd 的环境参数文件是<code>/etc/sysconfig/sshd</code>。</p>
+<p>配置文件里面最重要的字段是<code>ExecStart</code>。</p>
+<blockquote>
+<p><code>ExecStart</code>字段：定义启动进程时执行的命令。</p>
+</blockquote>
+<p>上面的例子中，启动<code>sshd</code>，执行的命令是<code>/usr/sbin/sshd -D $OPTIONS</code>，其中的变量<code>$OPTIONS</code>就来自<code>EnvironmentFile</code>字段指定的环境参数文件。</p>
+<p>与之作用相似的，还有如下这些字段。</p>
+<blockquote>
+<ul>
+<li><code>ExecReload</code>字段：重启服务时执行的命令</li>
+<li><code>ExecStop</code>字段：停止服务时执行的命令</li>
+<li><code>ExecStartPre</code>字段：启动服务之前执行的命令</li>
+<li><code>ExecStartPost</code>字段：启动服务之后执行的命令</li>
+<li><code>ExecStopPost</code>字段：停止服务之后执行的命令</li>
+</ul>
+</blockquote>
+<p>请看下面的例子。</p>
+<blockquote>
+<div data-rehype-pretty-code-fragment><pre style="background-color:var(--shiki-color-background);" tabindex="0" data-language="bash" data-theme="default"><code data-language="bash" data-theme="default"><span data-line> </span>
+<span data-line><span style="color:var(--shiki-color-text);">[Service]</span></span>
+<span data-line><span style="color:var(--shiki-color-text);">ExecStart</span><span style="color:var(--shiki-token-keyword);">=</span><span style="color:var(--shiki-token-string);">/bin/echo</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-function);">execstart1</span></span>
+<span data-line><span style="color:var(--shiki-color-text);">ExecStart</span><span style="color:var(--shiki-token-keyword);">=</span></span>
+<span data-line><span style="color:var(--shiki-color-text);">ExecStart</span><span style="color:var(--shiki-token-keyword);">=</span><span style="color:var(--shiki-token-string);">/bin/echo</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-function);">execstart2</span></span>
+<span data-line><span style="color:var(--shiki-color-text);">ExecStartPost</span><span style="color:var(--shiki-token-keyword);">=</span><span style="color:var(--shiki-token-string);">/bin/echo</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-function);">post1</span></span>
+<span data-line><span style="color:var(--shiki-color-text);">ExecStartPost</span><span style="color:var(--shiki-token-keyword);">=</span><span style="color:var(--shiki-token-string);">/bin/echo</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-function);">post2</span></span></code></pre></div>
+</blockquote>
+<p>上面这个配置文件，第二行<code>ExecStart</code>设为空值，等于取消了第一行的设置，运行结果如下。</p>
+<blockquote>
+<div data-rehype-pretty-code-fragment><pre style="background-color:var(--shiki-color-background);" tabindex="0" data-language="bash" data-theme="default"><code data-language="bash" data-theme="default"><span data-line> </span>
+<span data-line><span style="color:var(--shiki-token-function);">execstart2</span></span>
+<span data-line><span style="color:var(--shiki-token-function);">post1</span></span>
+<span data-line><span style="color:var(--shiki-token-function);">post2</span></span></code></pre></div>
+</blockquote>
+<p>所有的启动设置之前，都可以加上一个连词号（<code>-</code>），表示”抑制错误”，即发生错误的时候，不影响其他命令的执行。比如，<code>EnvironmentFile=-/etc/sysconfig/sshd</code>（注意等号后面的那个连词号），就表示即使<code>/etc/sysconfig/sshd</code>文件不存在，也不会抛出错误。</p>
+<h3 id="62-启动类型">6.2 启动类型<a aria-hidden="true" tabindex="-1" href="#62-启动类型" class="internal"> §</a></h3>
+<p><code>Type</code>字段定义启动类型。它可以设置的值如下。</p>
+<blockquote>
+<ul>
+<li>simple（默认值）：<code>ExecStart</code>字段启动的进程为主进程</li>
+<li>forking：<code>ExecStart</code>字段将以<code>fork()</code>方式启动，此时父进程将会退出，子进程将成为主进程</li>
+<li>oneshot：类似于<code>simple</code>，但只执行一次，Systemd 会等它执行完，才启动其他服务</li>
+<li>dbus：类似于<code>simple</code>，但会等待 D-Bus 信号后启动</li>
+<li>notify：类似于<code>simple</code>，启动结束后会发出通知信号，然后 Systemd 再启动其他服务</li>
+<li>idle：类似于<code>simple</code>，但是要等到其他任务都执行完，才会启动该服务。一种使用场合是为让该服务的输出，不与其他服务的输出相混合</li>
+</ul>
+</blockquote>
+<p>下面是一个<code>oneshot</code>的例子，笔记本电脑启动时，要把触摸板关掉，配置文件可以这样写。</p>
+<blockquote>
+<div data-rehype-pretty-code-fragment><pre style="background-color:var(--shiki-color-background);" tabindex="0" data-language="bash" data-theme="default"><code data-language="bash" data-theme="default"><span data-line> </span>
+<span data-line><span style="color:var(--shiki-color-text);">[Unit]</span></span>
+<span data-line><span style="color:var(--shiki-color-text);">Description</span><span style="color:var(--shiki-token-keyword);">=</span><span style="color:var(--shiki-token-string);">Switch-off</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-function);">Touchpad</span></span>
+<span data-line> </span>
+<span data-line><span style="color:var(--shiki-color-text);">[Service]</span></span>
+<span data-line><span style="color:var(--shiki-color-text);">Type</span><span style="color:var(--shiki-token-keyword);">=</span><span style="color:var(--shiki-token-string);">oneshot</span></span>
+<span data-line><span style="color:var(--shiki-color-text);">ExecStart</span><span style="color:var(--shiki-token-keyword);">=</span><span style="color:var(--shiki-token-string);">/usr/bin/touchpad-off</span></span>
+<span data-line> </span>
+<span data-line><span style="color:var(--shiki-color-text);">[Install]</span></span>
+<span data-line><span style="color:var(--shiki-color-text);">WantedBy</span><span style="color:var(--shiki-token-keyword);">=</span><span style="color:var(--shiki-token-string);">multi-user.target</span></span></code></pre></div>
+</blockquote>
+<p>上面的配置文件，启动类型设为<code>oneshot</code>，就表明这个服务只要运行一次就够了，不需要长期运行。</p>
+<p>如果关闭以后，将来某个时候还想打开，配置文件修改如下。</p>
+<blockquote>
+<div data-rehype-pretty-code-fragment><pre style="background-color:var(--shiki-color-background);" tabindex="0" data-language="bash" data-theme="default"><code data-language="bash" data-theme="default"><span data-line> </span>
+<span data-line><span style="color:var(--shiki-color-text);">[Unit]</span></span>
+<span data-line><span style="color:var(--shiki-color-text);">Description</span><span style="color:var(--shiki-token-keyword);">=</span><span style="color:var(--shiki-token-string);">Switch-off</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-function);">Touchpad</span></span>
+<span data-line> </span>
+<span data-line><span style="color:var(--shiki-color-text);">[Service]</span></span>
+<span data-line><span style="color:var(--shiki-color-text);">Type</span><span style="color:var(--shiki-token-keyword);">=</span><span style="color:var(--shiki-token-string);">oneshot</span></span>
+<span data-line><span style="color:var(--shiki-color-text);">ExecStart</span><span style="color:var(--shiki-token-keyword);">=</span><span style="color:var(--shiki-token-string);">/usr/bin/touchpad-off</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-function);">start</span></span>
+<span data-line><span style="color:var(--shiki-color-text);">ExecStop</span><span style="color:var(--shiki-token-keyword);">=</span><span style="color:var(--shiki-token-string);">/usr/bin/touchpad-off</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-function);">stop</span></span>
+<span data-line><span style="color:var(--shiki-color-text);">RemainAfterExit</span><span style="color:var(--shiki-token-keyword);">=</span><span style="color:var(--shiki-token-string);">yes</span></span>
+<span data-line> </span>
+<span data-line><span style="color:var(--shiki-color-text);">[Install]</span></span>
+<span data-line><span style="color:var(--shiki-color-text);">WantedBy</span><span style="color:var(--shiki-token-keyword);">=</span><span style="color:var(--shiki-token-string);">multi-user.target</span></span></code></pre></div>
+</blockquote>
+<p>上面配置文件中，<code>RemainAfterExit</code>字段设为<code>yes</code>，表示进程退出以后，服务仍然保持执行。这样的话，一旦使用<code>systemctl stop</code>命令停止服务，<code>ExecStop</code>指定的命令就会执行，从而重新开启触摸板。</p>
+<h3 id="63-重启行为">6.3 重启行为<a aria-hidden="true" tabindex="-1" href="#63-重启行为" class="internal"> §</a></h3>
+<p><code>Service</code>区块有一些字段，定义了重启行为。</p>
+<blockquote>
+<p><code>KillMode</code>字段：定义 Systemd 如何停止 sshd 服务。</p>
+</blockquote>
+<p>上面这个例子中，将<code>KillMode</code>设为<code>process</code>，表示只停止主进程，不停止任何sshd 子进程，即子进程打开的 SSH session 仍然保持连接。这个设置不太常见，但对 sshd 很重要，否则你停止服务的时候，会连自己打开的 SSH session 一起杀掉。</p>
+<p><code>KillMode</code>字段可以设置的值如下。</p>
+<blockquote>
+<ul>
+<li>control-group（默认值）：当前控制组里面的所有子进程，都会被杀掉</li>
+<li>process：只杀主进程</li>
+<li>mixed：主进程将收到 SIGTERM 信号，子进程收到 SIGKILL 信号</li>
+<li>none：没有进程会被杀掉，只是执行服务的 stop 命令。</li>
+</ul>
+</blockquote>
+<p>接下来是<code>Restart</code>字段。</p>
+<blockquote>
+<p><code>Restart</code>字段：定义了 sshd 退出后，Systemd 的重启方式。</p>
+</blockquote>
+<p>上面的例子中，<code>Restart</code>设为<code>on-failure</code>，表示任何意外的失败，就将重启sshd。如果 sshd 正常停止（比如执行<code>systemctl stop</code>命令），它就不会重启。</p>
+<p><code>Restart</code>字段可以设置的值如下。</p>
+<blockquote>
+<ul>
+<li>no（默认值）：退出后不会重启</li>
+<li>on-success：只有正常退出时（退出状态码为0），才会重启</li>
+<li>on-failure：非正常退出时（退出状态码非0），包括被信号终止和超时，才会重启</li>
+<li>on-abnormal：只有被信号终止和超时，才会重启</li>
+<li>on-abort：只有在收到没有捕捉到的信号终止时，才会重启</li>
+<li>on-watchdog：超时退出，才会重启</li>
+<li>always：不管是什么退出原因，总是重启</li>
+</ul>
+</blockquote>
+<p>对于守护进程，推荐设为<code>on-failure</code>。对于那些允许发生错误退出的服务，可以设为<code>on-abnormal</code>。</p>
+<p>最后是<code>RestartSec</code>字段。</p>
+<blockquote>
+<p><code>RestartSec</code>字段：表示 Systemd 重启服务之前，需要等待的秒数。上面的例子设为等待42秒。</p>
+</blockquote>
+<h2 id="七install-区块">七、[Install] 区块<a aria-hidden="true" tabindex="-1" href="#七install-区块" class="internal"> §</a></h2>
+<p><code>Install</code>区块，定义如何安装这个配置文件，即怎样做到开机启动。</p>
+<blockquote>
+<p><code>WantedBy</code>字段：表示该服务所在的 Target。</p>
+</blockquote>
+<p><code>Target</code>的含义是服务组，表示一组服务。<code>WantedBy=multi-user.target</code>指的是，sshd 所在的 Target 是<code>multi-user.target</code>。</p>
+<p>这个设置非常重要，因为执行<code>systemctl enable sshd.service</code>命令时，<code>sshd.service</code>的一个符号链接，就会放在<code>/etc/systemd/system</code>目录下面的<code>multi-user.target.wants</code>子目录之中。</p>
+<p>Systemd 有默认的启动 Target。</p>
+<blockquote>
+<div data-rehype-pretty-code-fragment><pre style="background-color:var(--shiki-color-background);" tabindex="0" data-language="bash" data-theme="default"><code data-language="bash" data-theme="default"><span data-line> </span>
+<span data-line><span style="color:var(--shiki-token-function);">$</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">systemctl</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">get-default</span></span>
+<span data-line><span style="color:var(--shiki-token-function);">multi-user.target</span></span></code></pre></div>
+</blockquote>
+<p>上面的结果表示，默认的启动 Target 是<code>multi-user.target</code>。在这个组里的所有服务，都将开机启动。这就是为什么<code>systemctl enable</code>命令能设置开机启动的原因。</p>
+<p>使用 Target 的时候，<code>systemctl list-dependencies</code>命令和<code>systemctl isolate</code>命令也很有用。</p>
+<blockquote>
+<div data-rehype-pretty-code-fragment><pre style="background-color:var(--shiki-color-background);" tabindex="0" data-language="bash" data-theme="default"><code data-language="bash" data-theme="default"><span data-line> </span>
+<span data-line><span style="color:var(--shiki-token-comment);"># 查看 multi-user.target 包含的所有服务</span></span>
+<span data-line><span style="color:var(--shiki-token-function);">$</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">systemctl</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">list-dependencies</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">multi-user.target</span></span>
+<span data-line> </span>
+<span data-line><span style="color:var(--shiki-token-comment);"># 切换到另一个 target</span></span>
+<span data-line><span style="color:var(--shiki-token-comment);"># shutdown.target 就是关机状态</span></span>
+<span data-line><span style="color:var(--shiki-token-function);">$</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">sudo</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">systemctl</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">isolate</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">shutdown.target</span></span></code></pre></div>
+</blockquote>
+<p>一般来说，常用的 Target 有两个：一个是<code>multi-user.target</code>，表示多用户命令行状态；另一个是<code>graphical.target</code>，表示图形用户状态，它依赖于<code>multi-user.target</code>。官方文档有一张非常清晰的 <a href="https://www.freedesktop.org/software/systemd/man/bootup.html#System%20Manager%20Bootup" class="external">Target 依赖关系图</a>。</p>
+<h2 id="八target-的配置文件">八、Target 的配置文件<a aria-hidden="true" tabindex="-1" href="#八target-的配置文件" class="internal"> §</a></h2>
+<p>Target 也有自己的配置文件。</p>
+<blockquote>
+<div data-rehype-pretty-code-fragment><pre style="background-color:var(--shiki-color-background);" tabindex="0" data-language="bash" data-theme="default"><code data-language="bash" data-theme="default"><span data-line> </span>
+<span data-line><span style="color:var(--shiki-token-function);">$</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">systemctl</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">cat</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">multi-user.target</span></span>
+<span data-line> </span>
+<span data-line><span style="color:var(--shiki-color-text);">[Unit]</span></span>
+<span data-line><span style="color:var(--shiki-color-text);">Description</span><span style="color:var(--shiki-token-keyword);">=</span><span style="color:var(--shiki-token-string);">Multi-User</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-function);">System</span></span>
+<span data-line><span style="color:var(--shiki-color-text);">Documentation</span><span style="color:var(--shiki-token-keyword);">=</span><span style="color:var(--shiki-token-string);">man:systemd.special</span><span style="color:var(--shiki-color-text);">(</span><span style="color:var(--shiki-token-function);">7</span><span style="color:var(--shiki-color-text);">)</span></span>
+<span data-line><span style="color:var(--shiki-color-text);">Requires</span><span style="color:var(--shiki-token-keyword);">=</span><span style="color:var(--shiki-token-string);">basic.target</span></span>
+<span data-line><span style="color:var(--shiki-color-text);">Conflicts</span><span style="color:var(--shiki-token-keyword);">=</span><span style="color:var(--shiki-token-string);">rescue.service</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-function);">rescue.target</span></span>
+<span data-line><span style="color:var(--shiki-color-text);">After</span><span style="color:var(--shiki-token-keyword);">=</span><span style="color:var(--shiki-token-string);">basic.target</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-function);">rescue.service</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">rescue.target</span></span>
+<span data-line><span style="color:var(--shiki-color-text);">AllowIsolate</span><span style="color:var(--shiki-token-keyword);">=</span><span style="color:var(--shiki-token-string);">yes</span></span></code></pre></div>
+</blockquote>
+<p>注意，Target 配置文件里面没有启动命令。</p>
+<p>上面输出结果中，主要字段含义如下。</p>
+<blockquote>
+<p><code>Requires</code>字段：要求<code>basic.target</code>一起运行。</p>
+<p><code>Conflicts</code>字段：冲突字段。如果<code>rescue.service</code>或<code>rescue.target</code>正在运行，<code>multi-user.target</code>就不能运行，反之亦然。</p>
+<p><code>After</code>：表示<code>multi-user.target</code>在<code>basic.target</code> 、 <code>rescue.service</code>、 <code>rescue.target</code>之后启动，如果它们有启动的话。</p>
+<p><code>AllowIsolate</code>：允许使用<code>systemctl isolate</code>命令切换到<code>multi-user.target</code>。</p>
+</blockquote>
+<h2 id="九修改配置文件后重启">九、修改配置文件后重启<a aria-hidden="true" tabindex="-1" href="#九修改配置文件后重启" class="internal"> §</a></h2>
+<p>修改配置文件以后，需要重新加载配置文件，然后重新启动相关服务。</p>
+<blockquote>
+<div data-rehype-pretty-code-fragment><pre style="background-color:var(--shiki-color-background);" tabindex="0" data-language="bash" data-theme="default"><code data-language="bash" data-theme="default"><span data-line> </span>
+<span data-line><span style="color:var(--shiki-token-comment);"># 重新加载配置文件</span></span>
+<span data-line><span style="color:var(--shiki-token-function);">$</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">sudo</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">systemctl</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">daemon-reload</span></span>
+<span data-line> </span>
+<span data-line><span style="color:var(--shiki-token-comment);"># 重启相关服务</span></span>
+<span data-line><span style="color:var(--shiki-token-function);">$</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">sudo</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">systemctl</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">restart</span><span style="color:var(--shiki-color-text);"> </span><span style="color:var(--shiki-token-string);">foobar</span></span></code></pre></div>
+</blockquote>
+<p>（完）</p></article></div><div class="right sidebar"><div class="graph"><h3>Graph View</h3><div class="graph-outer"><div id="graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:1,&quot;scale&quot;:1.1,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.3,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1}"></div><svg version="1.1" id="global-graph-icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 55 55" fill="currentColor" xml:space="preserve"><path d="M49,0c-3.309,0-6,2.691-6,6c0,1.035,0.263,2.009,0.726,2.86l-9.829,9.829C32.542,17.634,30.846,17,29,17
+	s-3.542,0.634-4.898,1.688l-7.669-7.669C16.785,10.424,17,9.74,17,9c0-2.206-1.794-4-4-4S9,6.794,9,9s1.794,4,4,4
+	c0.74,0,1.424-0.215,2.019-0.567l7.669,7.669C21.634,21.458,21,23.154,21,25s0.634,3.542,1.688,4.897L10.024,42.562
+	C8.958,41.595,7.549,41,6,41c-3.309,0-6,2.691-6,6s2.691,6,6,6s6-2.691,6-6c0-1.035-0.263-2.009-0.726-2.86l12.829-12.829
+	c1.106,0.86,2.44,1.436,3.898,1.619v10.16c-2.833,0.478-5,2.942-5,5.91c0,3.309,2.691,6,6,6s6-2.691,6-6c0-2.967-2.167-5.431-5-5.91
+	v-10.16c1.458-0.183,2.792-0.759,3.898-1.619l7.669,7.669C41.215,39.576,41,40.26,41,41c0,2.206,1.794,4,4,4s4-1.794,4-4
+	s-1.794-4-4-4c-0.74,0-1.424,0.215-2.019,0.567l-7.669-7.669C36.366,28.542,37,26.846,37,25s-0.634-3.542-1.688-4.897l9.665-9.665
+	C46.042,11.405,47.451,12,49,12c3.309,0,6-2.691,6-6S52.309,0,49,0z M11,9c0-1.103,0.897-2,2-2s2,0.897,2,2s-0.897,2-2,2
+	S11,10.103,11,9z M6,51c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S8.206,51,6,51z M33,49c0,2.206-1.794,4-4,4s-4-1.794-4-4
+	s1.794-4,4-4S33,46.794,33,49z M29,31c-3.309,0-6-2.691-6-6s2.691-6,6-6s6,2.691,6,6S32.309,31,29,31z M47,41c0,1.103-0.897,2-2,2
+	s-2-0.897-2-2s0.897-2,2-2S47,39.897,47,41z M49,10c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S51.206,10,49,10z"></path></svg></div><div id="global-graph-outer"><div id="global-graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:-1,&quot;scale&quot;:0.9,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.3,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1}"></div></div></div><div class="backlinks"><h3>Backlinks</h3><ul class="overflow"><li>No backlinks found</li></ul></div></div></div><footer><hr/><p>Created with <a href="https://quartz.jzhao.xyz/">Quartz v4.0.7</a>, © 2023</p><ul><li><a href="https://github.com/jackyzha0/quartz">GitHub</a></li><li><a href="https://discord.gg/cRFFHYye7t">Discord Community</a></li></ul></footer></div></body><script type="application/javascript">// quartz/components/scripts/quartz/components/scripts/callout.inline.ts
+function toggleCallout() {
+  const outerBlock = this.parentElement;
+  outerBlock.classList.toggle(`is-collapsed`);
+  const collapsed = outerBlock.classList.contains(`is-collapsed`);
+  const height = collapsed ? this.scrollHeight : outerBlock.scrollHeight;
+  outerBlock.style.maxHeight = height + `px`;
+  let current = outerBlock;
+  let parent = outerBlock.parentElement;
+  while (parent) {
+    if (!parent.classList.contains(`callout`)) {
+      return;
+    }
+    const collapsed2 = parent.classList.contains(`is-collapsed`);
+    const height2 = collapsed2 ? parent.scrollHeight : parent.scrollHeight + current.scrollHeight;
+    parent.style.maxHeight = height2 + `px`;
+    current = parent;
+    parent = parent.parentElement;
+  }
+}
+function setupCallout() {
+  const collapsible = document.getElementsByClassName(
+    `callout is-collapsible`
+  );
+  for (const div of collapsible) {
+    const title = div.firstElementChild;
+    if (title) {
+      title.removeEventListener(`click`, toggleCallout);
+      title.addEventListener(`click`, toggleCallout);
+      const collapsed = div.classList.contains(`is-collapsed`);
+      const height = collapsed ? title.scrollHeight : div.scrollHeight;
+      div.style.maxHeight = height + `px`;
+    }
+  }
+}
+document.addEventListener(`nav`, setupCallout);
+window.addEventListener(`resize`, setupCallout);
+</script><script type="module">
+          import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.esm.min.mjs';
+          const darkMode = document.documentElement.getAttribute('saved-theme') === 'dark'
+          mermaid.initialize({ 
+            startOnLoad: false,
+            securityLevel: 'loose',
+            theme: darkMode ? 'dark' : 'default'
+          });
+          document.addEventListener('nav', async () => {
+            await mermaid.run({
+              querySelector: '.mermaid'
+            })
+          });
+          </script><script src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/contrib/copy-tex.min.js" type="application/javascript"></script><script type="application/javascript">
+          const socket = new WebSocket('ws://localhost:3001')
+          socket.addEventListener('message', () => document.location.reload())
+        </script><script src="../../postscript.js" type="module"></script></html>
