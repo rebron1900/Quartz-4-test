@@ -7,6 +7,12 @@
       <atom:link href="https://four.quartz.jzhao.xyz/index.xml" rel="self" type="application/rss+xml"/>
     </channel>
     <items>
+    <title>Knowledge</title>
+    <link>https://four.quartz.jzhao.xyz/Knowledge</link>
+    <guid>https://four.quartz.jzhao.xyz/Knowledge</guid>
+    <description>Quartz is a fast, batteries-included static-site generator that transforms Markdown content into fully functional websites. Thousands of students, developers, and teachers are already using Quartz to publish personal notes, wikis, and digital gardens to the web.</description>
+    <pubDate>Mon, 14 Aug 2023 09:53:20 GMT</pubDate>
+  </items><items>
     <title>Authoring Content</title>
     <link>https://four.quartz.jzhao.xyz/authoring-content</link>
     <guid>https://four.quartz.jzhao.xyz/authoring-content</guid>
@@ -66,6 +72,186 @@
     <guid>https://four.quartz.jzhao.xyz/upgrading</guid>
     <description>tet Note This is specifically a guide for upgrading Quartz 4 version to a more recent update. If you are coming from Quartz 3, check out the migration guide for more info.</description>
     <pubDate>Mon, 14 Aug 2023 09:02:10 GMT</pubDate>
+  </items><items>
+    <title>Systemd 入门教程：实战篇</title>
+    <link>https://four.quartz.jzhao.xyz/Linux/Systemd-入门教程-实战篇</link>
+    <guid>https://four.quartz.jzhao.xyz/Linux/Systemd-入门教程-实战篇</guid>
+    <description>上一篇文章，我介绍了 Systemd 的主要命令，今天介绍如何使用它完成一些基本的任务。 一、开机启动 § 对于那些支持 Systemd 的软件，安装的时候，会自动在/usr/lib/systemd/system目录添加一个配置文件。 如果你想让该软件开机启动，就执行下面的命令（以httpd.service为例）。 $ sudo systemctl enable httpd 上面的命令相当于在/etc/systemd/system目录添加一个符号链接，指向/usr/lib/systemd/system里面的httpd.</description>
+    <pubDate>Sat, 05 Aug 2023 04:57:27 GMT</pubDate>
+  </items><items>
+    <title>/var/lib/docker/overlay2 占用很大，清理Docker占用的磁盘空间</title>
+    <link>https://four.quartz.jzhao.xyz/Linux/var-lib-docker-overlay2-占用很大-清理Docker占用的磁盘空间</link>
+    <guid>https://four.quartz.jzhao.xyz/Linux/var-lib-docker-overlay2-占用很大-清理Docker占用的磁盘空间</guid>
+    <description>今天收到一个磁盘告警，告警的原因是一台 Jenkins 机器上某个磁盘空间满了。 马上使用 df -h 命令看下使用情况 上图是我优化后的截图，告警的时候磁盘使用量已经接近 100%。 上图中看到的 overlay 分区是 Docker 的虚拟文件系统，其真实的文件系统是 /dev/vda1。所以我们要找到是什么原因大量占据了 /dev/vda1。 一般有两种情况。 无用的镜像和容器太多# § 我们可以使用以下命令大致看下情况 docker system df -v # 用于清理磁盘，删除关闭的容器、无用的数据卷和网络，以及无tag的镜像。 docker system prune # 可以将没有容器使用 Docker 镜像都删掉。注意，这两个命令会把你暂时关闭的容器，以及暂时没有用到的Docker镜像都删掉了 docker system prune -a 容器输出的日志太大# § 这种情况往往是容器长时间运行，容器打印了大量的日志未清理，占据了大量磁盘空间。比如之前运行的一个Jenkins容器，运行几个月后，打印的日志占了近10个G的磁盘。这种情况下清理日志文件就行了。 容器的日志文件在/var/lib/docker/containers/{containerId}下。 [root@i-h8v5dv1n 55406a3ac6f4a59555897c606677201853973f4266c32284eeb8274682fd099d]# ls -al total 512 drwx-----x 4 root root 4096 Feb 8 17:57 .</description>
+    <pubDate>Sat, 05 Aug 2023 04:57:27 GMT</pubDate>
+  </items><items>
+    <title>常用命令</title>
+    <link>https://four.quartz.jzhao.xyz/Linux/常用命令</link>
+    <guid>https://four.quartz.jzhao.xyz/Linux/常用命令</guid>
+    <description> #nvm nvm 改 node 默认版本的方法：1、打开终端命令窗口；2、通过执行 nvm alias default v4.3.0 命令设置 nodejs 默认版本即可。 .</description>
+    <pubDate>Tue, 08 Aug 2023 06:29:19 GMT</pubDate>
+  </items><items>
+    <title>Minimal主题手册</title>
+    <link>https://four.quartz.jzhao.xyz/Obsidian/Minimal主题手册</link>
+    <guid>https://four.quartz.jzhao.xyz/Obsidian/Minimal主题手册</guid>
+    <description>Home - Minimal Documentation Minimal is an open source distraction-free interface for Obsidian, by @kepano. Minimal is the most popular Obsidian theme, and winner of the official Best Theme award.</description>
+    <pubDate>Tue, 08 Aug 2023 06:29:25 GMT</pubDate>
+  </items><items>
+    <title>Obsidian1.0快开网页教程</title>
+    <link>https://four.quartz.jzhao.xyz/Obsidian/Obsidian1-0快开网页教程</link>
+    <guid>https://four.quartz.jzhao.xyz/Obsidian/Obsidian1-0快开网页教程</guid>
+    <description> 需要Obsidian1.0版本及以上 所需插件 § 如何下载和手动安装插件方法在最后。 QuickAdd obsidian-web-browser 插件发布页： releases Commander 设置流程 § 脚本设置 § 新建txt文件，将下面代码粘贴到txt文件并将https://www.</description>
+    <pubDate>Tue, 08 Aug 2023 06:29:33 GMT</pubDate>
+  </items><items>
+    <title>Termux配置Git搭配Obsidian</title>
+    <link>https://four.quartz.jzhao.xyz/Obsidian/Termux配置Git搭配Obsidian</link>
+    <guid>https://four.quartz.jzhao.xyz/Obsidian/Termux配置Git搭配Obsidian</guid>
+    <description>Install Termux and Termux Widget § From Github Termux ,[^1] Github Termux Widget [^2] download the APKs and install them. You can use F-Droid as well.</description>
+    <pubDate>Tue, 08 Aug 2023 06:29:35 GMT</pubDate>
+  </items><items>
+    <title>基于Obsidian的双链笔记文件夹搭建方案</title>
+    <link>https://four.quartz.jzhao.xyz/Obsidian/基于Obsidian的双链笔记文件夹搭建方案</link>
+    <guid>https://four.quartz.jzhao.xyz/Obsidian/基于Obsidian的双链笔记文件夹搭建方案</guid>
+    <description>2021年下半年关注到 Obsidian，到目前用了近一年时间，了解学习了卢曼卡片盒、《卡片笔记写作法》、PARA笔记法，最近关注到 Nick Milo 的 Access 方法，对自己的 Obsidian 文件夹做了第三次迭代，下面分享下方案设计来源、原则和具体的文件夹设置。 方案设计来源 § 文件夹结构主要借鉴 Access（Atlas、Calendar、Cards、Extras、Sources、Spaces）方法，将 Atlas 改为Map，Sources 改为 Resource；Spaces 拆分为 Life（Work、Study）； Inbox：来源于印象笔记的文件夹设置； MyNote：来源于《卡片笔记写作法》的文献笔记和永久笔记； KeyArea：来源于 Flomo少楠“积累知识的复利”直播中的“一定要有自己知识领域，卢曼是社会学家，天生就有自己的领域”的观点； Home：应该是源于 Nick Milo 的 LYT方案，存疑； 遵循的原则 § 一切从需求出发，文中的文件夹体系仅作为参考，根据自己的使用场景调优； 不做知识的搬用工，知识库的内容必须是用自己的话描述的、自己整理的内容（Resource 除外）； 每篇文章、每个卡片都要做好标签，方便 MOC的搭建，知识的链接； 文件夹体系 § Inbox § 定位：收集箱，存放临时性的文档，包括：未完成的文档、待归档的文档、外部导入文档等 原则：定期整理，进入 Inbox 超过一定期限的文档直接删除 文件夹结构 根目录：不需要区分来源的文档，直接丢进去 SimpRead：使用 简悦导入的文档 公众号：专门收集公众号文章 其他自定义的内容渠道 Map § 定位： 聚合零散的内容，个人知识库 的“高德地图为您导航”； 原则：信息汇总展现的主要方式，常用常新，需要不断的更新、优化、扩充； 文件夹结构 MOC：Map of Content Logs：日志文件，例如：Obsidian优化日志、插件迭代日志； Dashboard ：数据看板，使用插件输出的图形，例如：文档数量饼图、标签词云； Calendar § 定位：记录基于时间维度的内容，用于记录、跟踪、回顾事件； 原则：使用 间歇日记 记录当日的学习工作日志、关注的新闻热点、收集的好句子、看的书籍电影等； 文件夹结构 Daily：日记 Weekly：周记 Plans：计划（GTD 系统，建议轻量化使用，高频需求建议使用 滴答清单） Reviews：回顾 Card § 定位：收集来源于外部的信息、观点、知识点、兴趣点，转化为原子化的卡片； 原则：围绕单一关键词，内容精简易读； 文件夹结构 根目录：未能归类的“知识点”类型的卡片，比如：边际效益递减、邓宁—克鲁格效应； People：人物卡片，类似豆瓣的人物介绍页面，包括：生卒年、职业、成就、作品等； Time：时间卡片，统计该时间点发生的事件； Place：地点卡片； Movie：电影卡片，记录电影的元数据（导演、编剧、演员、上映时间等）、截图、金句等，但不包括影评、观后感； Reeding：书籍卡片，记录数据的元数据（作者、译者、出版社等）、原文摘录等，但不包括读后感； MyNote § 定位：完全原创的内容，短则一句话一条灵感，长则一篇专题文章，相当于 卡片盒笔记法 里面的文献笔记+常青笔记； 原则：不要有孤立的文件，要链接到 Card、Resource的文档； 文件夹结构 Idea：想法、创意、灵感； MovieReview：电影观后感，链接到对应电影的 电影卡片 BookReview：书籍读后感，链接到对应书籍的 书籍卡片 Permanent：常青笔记或永久笔记，会不定期迭代的内容 Publish：发表到知乎、公众号、社区等渠道的文章（也可以用 MOC或Log 管理） KeyArea § 定位：专精的领域，安身立命的技能点； 原则：兴趣点可以很多，但不能被 乱花迷眼，KeyArea 才是 PKM的核心，刻意练习是一切进步的阶梯； 文件夹结构 根据领域的特点自定义文件夹结构，卡片文档、长篇文档都可以； Life（Work、Study） § 定位：用于管理生活、工作、学习、特定项目等领域的内容，需要专项管理的部分，非必须； 原则：Obsidian 的富文本能力比较弱，不适合管理图片、表格、音视频多的内容； 文件夹结构 Family：家人 Cost：花销 Travel：旅行 Extras § 定位：辅助性的内容，用来拓展 MarkDown 的富文本能力； 原则：给每一个附件重命名，保证附件可识别、可引用； 文件夹结构 Attachements：附件 Templaters：模板 Resource § 定位：收录来源于外部资料，用于引用、学习、备份的内容； 原则：尽量不修改原文内容，阅读产生的批注、想法制作文献笔记，添加源文档的引用； 文件夹结构 Books：电子书 Articles：收集的文章 Office：Word、Excel、PPT Report：数据报告 Research Papers：研究论文 Home § 定位：主页，链接其他常用文档、MOC、Dashboard等，可以是单一主页或多个主页，非必须 原则：根据个性化需求定制，颜值控必选 结语 § 每个人的需求各有不同，此文件夹体系如能起到灵犀一点的效果，能够帮助你优化、迭代自己的知识管理系统，就达成目的了。 如有疑问，请留言；如有帮助，请点赞收藏。 拱手 --- 参考文档 1.</description>
+    <pubDate>Tue, 08 Aug 2023 06:29:38 GMT</pubDate>
+  </items><items>
+    <title>1. 插件更新目录</title>
+    <link>https://four.quartz.jzhao.xyz/Obsidian/插件说明</link>
+    <guid>https://four.quartz.jzhao.xyz/Obsidian/插件说明</guid>
+    <description>1. 插件更新目录 § 集成了常用且较为稳定的插件能力，这些插件不是面面俱到，但是可以解决原始 Markdown 和 Obsidian 在书写体验上的一定问题。遵循”即开即用” 列表如下： 插件名称解释开启状态better-fn更好的脚注插件和样式默认开启buttons按钮插件默认开启calendar日历插件默认开启consistent-attachments-and-links默认开启cm-chs-patch（可选）中文分词插件默认开启editing-toolbar更好的快捷文档编辑工具栏，支持置顶，浮动，跟随光标等多种方式默认开启dataview用于数据痴迷的复杂数据视图默认开启file-explorer-note-count为文件管理添加文件夹中文件的数量计数默认开启lapel支持快捷调整大纲标题默认开启metaedit可编辑markdown 的meta信息，或者叫 yaml区默认开启obsidian-banners主页显示头图默认开启obsidian-booknote-pluginpdf 查看和标注插件默认开启number-headings-obsidian在黑曜石文档中自动编号或重新编号标题默认开启obsidian-attachment-name-formatting默认开启obsidian-copy-block-link右键菜单获得链接到块和标题默认开启obsidian-core-search-assistant-plugin增强搜索插件，搜索结果卡片显示默认开启obsidian-custom-frames默认开启obsidian-dynamic-highlights实时预览模式下，按高亮指定文档比如日记中的时间默认开启obsidian-diagrams-net使用diagrams.</description>
+    <pubDate>Sat, 05 Aug 2023 04:57:27 GMT</pubDate>
+  </items><items>
+    <title>用 Git 在 Android 和 Windows 间同步 Obsidian 数据库</title>
+    <link>https://four.quartz.jzhao.xyz/Obsidian/用-Git-在-Android-和-Windows-间同步-Obsidian-数据库</link>
+    <guid>https://four.quartz.jzhao.xyz/Obsidian/用-Git-在-Android-和-Windows-间同步-Obsidian-数据库</guid>
+    <description>用 Git 在 Android 和 Windows 间同步 Obsidian 数据库 § 前言 § 如果你使用 Android 版 Obsidian，一个必须考虑的问题就是如何与电脑端同步笔记。 对此，诚然可以选择官方的 Obsidian Sync 服务，或者使用 Dropbox 等第三方同步工具，但我最推荐的还是使用 Git 同步。理由在于： 相比其他解决方案，Git 是开源的，不仅免费，而且安全性有保证； 作为最先进的分布式版本控制系统（没有之一），用 Git 可以方便地实现版本回溯和协同编辑等功能； Git 支持多种操作系统（Windows、macOS、Linux、Android、iOS），可以按需托管在国内外多家平台上（国外的 GitHub、GitLab，国内的 Gitee、CODING）。 当然，用 Git 同步的方案也有局限，包括有一定的学习成本，对纯新手不友好；多设备同时编辑容易产生冲突；以及需要另行手动备份存档等。 但瑕不掩瑜，Git 仍然是我在 Windows 桌面端和 Android 端同步 Obsidian 的首选。本文就为大家介绍我的具体实现方案。 （**注：**行文简洁起见，本文假定读者掌握命令行环境的基本操作，对于 Git 的功能和机制有初步了解。如果你不了解Git，那么本文食用起来可能会比较困难，不妨先通过廖雪峰的 Git 教程简单学习后再来尝试。） Windows 桌面端的准备工作 § 第一步：安装 Git § 在开始之前，请确保自己的 Windows 系统中已经安装了 Git。如果还没有安装，可以参考廖雪峰的教程。如果你已经安装了，那么可以跳过这一步。 第二步：在 Git 托管平台中新建仓库 § 接下来，我们在自己选用的 Git 托管平台上新建一个笔记专用仓库。 考虑到国内用户的访问便捷程度和中文支持，本文将主要使用国产服务 Gitee 演示（官网注册链接），并简单说明更为主流的 GitHub 平台的对应操作。 **如果使用 Gitee：**在顶部导航条点击「+」&gt;「新建仓库」，根据提示填写信息即可（暂不勾选给出的初始化选项）。 **如果使用 GitHub：**在顶部导航条点击「+」&gt;「New Repository」，根据提示填写信息即可（暂不勾选给出的初始化选项）。 第三步：生成 SSH 密钥 § 接着，我们需要生成一个 SSH 密钥（SSH Key），用于在本地和远程 Git 仓库同步时验证身份。 方法一：自动配置 § 为方便新手用户，我准备了一个配置脚本，按照如下步骤运行即可完成配置： 创建一个空白的 txt（后缀为 .</description>
+    <pubDate>Sat, 05 Aug 2023 04:57:27 GMT</pubDate>
+  </items><items>
+    <title>Powershel下Conda安装和配置</title>
+    <link>https://four.quartz.jzhao.xyz/Python/Conda相关资料</link>
+    <guid>https://four.quartz.jzhao.xyz/Python/Conda相关资料</guid>
+    <description>我在考虑要不要把Nodejs、Python、Ruby都用Conda来管理。 不过先看看相关资料。 已经用上了，真香。 关于Conda的发行版本 § conda是一个包和环境管理工具，它不仅能管理包，还能隔离和管理不同python版本的环境。类似管理nodejs环境的nvm工具。 anaconda和miniconda都是conda的一种发行版。只是包含的包不同。 anaconda包含了conda、python等180多个科学包及其依赖项，体格比较大。但很多东西你未必用到，所以才有mini版。 miniconda是最小的conda安装环境，只有conda+python+pip+zlib和一些其他常用的包，体格非常迷你。 pip也叫包管理器，和conda的区别是，pip只管理python的包，而conda可以安装所有语言的包。而且conda可以管理python环境，pip不行。 安装Conda § 我这里选择安装miniconda，conda完全安装似乎要3个多G，没有必要。 我使用的是 Winget 安装（不得不说Winget是挺方便的），命令如下： winget install miniconda3 常用命令 § clean Remove unused packages and caches.</description>
+    <pubDate>Tue, 08 Aug 2023 06:30:01 GMT</pubDate>
+  </items><items>
+    <title>Python使用外部配置文件</title>
+    <link>https://four.quartz.jzhao.xyz/Python/Python使用外部配置文件</link>
+    <guid>https://four.quartz.jzhao.xyz/Python/Python使用外部配置文件</guid>
+    <description>一、 为什么要使用配置 § 如果我们在较复杂的项目中不使用配置文件，我们可能会面临下面的情况： 你决定更改你的项目中数据库的 host， 因为你要将项目从测试环境转移到实际的上产环境中。如果你的项目中多个位置用到了这个 host，那你不得不一个一个找到这些位置再修改成新的 host。花了半天，然后过了一天，你发现项目在生产环境有些问题，需要重新移回测试环境，你得再次修改，这样工作很繁琐很不优雅。 你开发了一个很棒的开源项目，你想将其放到版本控制系统例如github上，但是你服务器的主机的地址、账号、密码也都上传上去了，但是你没有意识到，直到有个 bad guy 拿到了你的信息，从你的服务器窃取信息、攻击你的服务器，让你产生了极大的损失。然后你想把程序改动一下，把涉密的信息比如地址密码都删掉，可是由于版本控制的原因，别人依然能看到你以前版本的代码。于是你不得不改掉你的账户、密码等，真的是个悲伤的开源项目经历。 但是，如果你使用了配置管理呢，那会有以下几个优点： 这样就提高了代码的重用性，不再每次都去修改代码内部 这意味着其他不太懂你代码内部的人也可以使用你的项目，只用根据需求更改配置即可 有利于团队协作 有利于安全数据/秘密数据的管理 二、Python 中进行配置管理的几种方式 § 由于使用 Python 较多，因此基于 Python 进行配置管理的相关说明，当然其他语言也都是大同小异，主要思想还是不变。 2.</description>
+    <pubDate>Tue, 08 Aug 2023 06:30:12 GMT</pubDate>
+  </items><items>
+    <title>Python动态参数的使用</title>
+    <link>https://four.quartz.jzhao.xyz/Python/Python动态参数的使用</link>
+    <guid>https://four.quartz.jzhao.xyz/Python/Python动态参数的使用</guid>
+    <description>1. ’ * ’ 的作用 § 用在动态参数前，打包多个参数并将其转化为元组 def func(*args): print(args) func(1, 2, 3) # (1, 2, 3) 输入参数为1, 2, 3，最后返回的结果是一个元组 (1, 2, 3)。 用在可迭代对象前，进行自动解包转化为多个单变量参数 def func(a, b, c): print(a, b, c) args = [1, 2, 3] func(*args) # 1 2 3 输入参数为一个列表[1, 2, 3]，解释器自动进行解包然后分别传递给3个变量。 2.</description>
+    <pubDate>Tue, 08 Aug 2023 06:30:15 GMT</pubDate>
+  </items><items>
+    <title>Python轻量级ORM框架peewee用法详解</title>
+    <link>https://four.quartz.jzhao.xyz/Python/Python轻量级ORM框架peewee用法详解</link>
+    <guid>https://four.quartz.jzhao.xyz/Python/Python轻量级ORM框架peewee用法详解</guid>
+    <description>本文中代码样例所使用的 Person 模型如下： class Person(Model): Name = CharField() Age = IntegerField() Birthday = DateTimeField() Remarks = CharField(null=True) 一、新增 § 1、create § Model.</description>
+    <pubDate>Tue, 08 Aug 2023 06:30:18 GMT</pubDate>
+  </items><items>
+    <title>VSCode配合Pyenv</title>
+    <link>https://four.quartz.jzhao.xyz/Python/VSCode配合Pyenv</link>
+    <guid>https://four.quartz.jzhao.xyz/Python/VSCode配合Pyenv</guid>
+    <description>最近安装了Pyenv来管理python环境，不过在配合vscode的时候发现vscode默认调用的是我以前安装的3.10.5这个版本，查找了相关资料1后解决 vscode安装python插件 安装pyenv-win，推荐使用chocolatey安装 pyenv安装需要的python版本，安装后需要pyenv rehash 创建工程文件夹 在文件夹中输入以下命令生成.</description>
+    <pubDate>Tue, 08 Aug 2023 06:30:23 GMT</pubDate>
+  </items><items>
+    <title>“iloc cannot enlarge its target object”错误处理</title>
+    <link>https://four.quartz.jzhao.xyz/Python/iloc-cannot-enlarge-its-target-object-错误处理</link>
+    <guid>https://four.quartz.jzhao.xyz/Python/iloc-cannot-enlarge-its-target-object-错误处理</guid>
+    <description>这个是问题代码，报“iloc cannot enlarge its target object”，也就是说iloc越界了。 # 去除非中文，与长度为一的字符 for index, row in pos.iterrows(): temp = [] for i in row[&#039;分词后&#039;].</description>
+    <pubDate>Tue, 08 Aug 2023 06:30:06 GMT</pubDate>
+  </items><items>
+    <title>pip install 和conda install的区别</title>
+    <link>https://four.quartz.jzhao.xyz/Python/pip-install-和conda-install的区别</link>
+    <guid>https://four.quartz.jzhao.xyz/Python/pip-install-和conda-install的区别</guid>
+    <description>今天正好用到这部分的内容，做一些简单总结，欢迎大家指正： conda install xxx：这种方式安装的库都会放在anaconda3/pkgs目录下，这样的好处就是，当在某个环境下已经下载好了某个库，再在另一个环境中还需要这个库时，就可以直接从pkgs目录下将该库复制至新环境而不用重复下载。 pip install xxx：分两种情况，一种情况就是当前conda环境的python是conda安装的，和系统的不一样，那么xxx会被安装到anaconda3/envs/current_env/lib/python3.</description>
+    <pubDate>Tue, 08 Aug 2023 06:30:08 GMT</pubDate>
+  </items><items>
+    <title>python 怎么打印Pandas的Groupby对象？</title>
+    <link>https://four.quartz.jzhao.xyz/Python/python-怎么打印Pandas的Groupby对象？</link>
+    <guid>https://four.quartz.jzhao.xyz/Python/python-怎么打印Pandas的Groupby对象？</guid>
+    <description>如果直接打印grouby的结果默认是一个对象格式： § print(df.groupby(&#039;A&#039;)) &lt;pandas.core.groupby.DataFrameGroupBy object at 0x05416E90&gt; 国外找到如下资料1： § In Jupyter Notebook, if you do the following, it prints a nice grouped version of the object.</description>
+    <pubDate>Tue, 08 Aug 2023 06:30:09 GMT</pubDate>
+  </items><items>
+    <title>vscode搭配conda切换python版本</title>
+    <link>https://four.quartz.jzhao.xyz/Python/vscode搭配conda切换python版本</link>
+    <guid>https://four.quartz.jzhao.xyz/Python/vscode搭配conda切换python版本</guid>
+    <description>问题 § vs code中不切换conda环境会导致有些安装在特定虚拟环境的软件包无法被导入 会出现如下错误 Exception has occurred: ModuleNotFoundError 解决 § vs code中选择切换conda环境的方法 ctrl+shift+p出现命令栏 后输入 Python：Select Interpreter 然后就能选择想要选的环境了 9312151.</description>
+    <pubDate>Tue, 08 Aug 2023 06:30:21 GMT</pubDate>
+  </items><items>
+    <title>Powershell配置</title>
+    <link>https://four.quartz.jzhao.xyz/Windows/Powershell配置</link>
+    <guid>https://four.quartz.jzhao.xyz/Windows/Powershell配置</guid>
+    <description>一、安装Powershell § 安装方式又很多种，我这里用的官方推荐的winget安装方式1： winget search Microsoft.PowerShell winget install --id Microsoft.Powershell --source winget 二、安装oh-my-posh § windows11的话直接用 Winget 执行安装命令2就可以了，还是相当方便的 winget install JanDeDobbeleer.</description>
+    <pubDate>Tue, 08 Aug 2023 06:30:26 GMT</pubDate>
+  </items><items>
+    <title>SQLServer 错误: 15404，无法获取有关 Windows NT 组/用户</title>
+    <link>https://four.quartz.jzhao.xyz/Windows/SQLServer-错误-15404-无法获取有关-Windows-NT-组-用户</link>
+    <guid>https://four.quartz.jzhao.xyz/Windows/SQLServer-错误-15404-无法获取有关-Windows-NT-组-用户</guid>
+    <description>最近 检查到SqlServer备份发现备份失败了于是检查 sql代理日志发现如下报错 ： 核心提示：SQLServer 错误: 15404，无法获取有关 Windows NT 组/用户 ‘WIN-I556UB3ODG2\Administrator’ 的信息，错误代码 0x534。 [SQLSTATE 42000] (ConnIsLoginSysAdmin) 如图： 突然想起因为SqlServer改用登录方式和用户的原因： 解决步骤： 一、改变任务计划的权限，因为不是以之前登录的名字登录了，所以执行备份的时候会报错。 打开sql管理器-点开sql server代理 -任务计划-展开计划-点击计划属性-修改备份用户权限，点确定完成。 重新设置用户权限之后重新测试 执行备份，如没有报错则设置成功，故障解除。.</description>
+    <pubDate>Tue, 08 Aug 2023 06:30:28 GMT</pubDate>
+  </items><items>
+    <title>WSL2配置代理</title>
+    <link>https://four.quartz.jzhao.xyz/Windows/WSL2配置代理</link>
+    <guid>https://four.quartz.jzhao.xyz/Windows/WSL2配置代理</guid>
+    <description>1. Windows下打开代理 § 1.1 允许局域网 § 以Clash为例，购买相关配置，选择主页选项卡，开启允许局域网： 1.2 开启防火墙 § 打开Windows Defender 防火墙，选择允许应用或功能通过 Windows Defender 防火墙： 点击更改设置，找到Clash for Windows，然后勾选专用和公用： 如果找不到 2.</description>
+    <pubDate>Sat, 05 Aug 2023 07:03:38 GMT</pubDate>
+  </items><items>
+    <title>Win10系统 默认以管理员权限运行所有程序</title>
+    <link>https://four.quartz.jzhao.xyz/Windows/Win10系统-默认以管理员权限运行所有程序</link>
+    <guid>https://four.quartz.jzhao.xyz/Windows/Win10系统-默认以管理员权限运行所有程序</guid>
+    <description>非原创，用的是网址 win10如何默认所有软件以管理员身份运行－系统城 的方法。 百度上类似的修改管理员方式有很多，但都不是很彻底，有时会出现两个管理员共存，你还要看另一个管理员心情执行操作的情况。 具体方法如下: 一、 win+R, 输入 regedit 运行注册表 二、 在注册表地址栏输入 HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System 三、 选中左边System文件夹，在右侧找到 EnableLUA，将值从1改为0 四、 重启系统即可，然后就可以看到管理员就变成了你现操作的系统。执行的各种程序也都是直接以管理员权限执行 这样就不会出现百度的一些管理员修改方法，修改后还是要右键点管理员运行的情况。 网上还有些方法因为家庭版没组策略表不能执行（不过家庭版也可以可以用bea41d43dec21ab4c41be645.</description>
+    <pubDate>Tue, 08 Aug 2023 06:30:32 GMT</pubDate>
+  </items><items>
+    <title>Windows Server 2016中文版安装docker的详细步骤</title>
+    <link>https://four.quartz.jzhao.xyz/Windows/Windows-Server-2016中文版安装docker的详细步骤</link>
+    <guid>https://four.quartz.jzhao.xyz/Windows/Windows-Server-2016中文版安装docker的详细步骤</guid>
+    <description>实验环境： § 一台Windows Server 2016中文版，关闭防火墙，IP地址192.168.10.1/24 还需要一张网卡，需要连接外网，给Windows Server 2016下载更新文件 12 下载更新 § sconfig # 打开参数菜单 下载最新版的安装包，安装并重启 选择数字6，下载并安装更新，弹出黑色对话框后，选择A 让它下载更新并重启，此操作必须进行，否则后续安装会失败或者各种报错类似于linux各种软件版本依 赖 打开 powershell 以管理员方式运行 由于Windows Server 2016中文版不支持安装的NuGet，需要使用命令将原有的Tls一级，修改成二 级，才能安装NuGet服务 [System.</description>
+    <pubDate>Tue, 08 Aug 2023 06:30:35 GMT</pubDate>
+  </items><items>
+    <title>Windows11下安装Smartdns</title>
+    <link>https://four.quartz.jzhao.xyz/Windows/Windows11下安装Smartdns</link>
+    <guid>https://four.quartz.jzhao.xyz/Windows/Windows11下安装Smartdns</guid>
+    <description>WSL § 安装 WSL 安装 WSL 运行环境，发行版本选择 Ubuntu 系统为例。安装步骤请参考 WSL 安装说明 安装 SmartDNS 下载适用于 WSL 的安装包，并解压到如 D 盘根目录。解压后目录如下： D:\SMARTDNS ├─etc │ ├─default │ ├─init.d │ └─smartdns ├─package │ └─windows ├─src └─systemd 双击 D:\smartdns\package\windows 目录下的 install.</description>
+    <pubDate>Sat, 05 Aug 2023 04:57:27 GMT</pubDate>
+  </items><items>
+    <title>Windows系统使用make 执行makefile 指令进行项目启动,编译,运行 - 腾讯云开发者社区-腾讯云</title>
+    <link>https://four.quartz.jzhao.xyz/Windows/Windows系统使用make-执行makefile-指令进行项目启动-编译-运行-腾讯云开发者社区-腾讯云</link>
+    <guid>https://four.quartz.jzhao.xyz/Windows/Windows系统使用make-执行makefile-指令进行项目启动-编译-运行-腾讯云开发者社区-腾讯云</guid>
+    <description>最近需要开始开启一个go语言写的项目,项目开启需要使用make指令,但在windows上需要配置一些东西. 使用make指令在windows上推荐安装mingw 官网下载 releases 点击下载,下载后直接安装, 安装目录选默认的 在minggw的bin目录里将 很关键的一步 到此 make的指令就能在windows使用了 mingw32-make.</description>
+    <pubDate>Tue, 08 Aug 2023 06:30:43 GMT</pubDate>
+  </items><items>
+    <title>windows server 添加开机不用登录自启动服务</title>
+    <link>https://four.quartz.jzhao.xyz/Windows/windows-server-添加开机不用登录自启动服务</link>
+    <guid>https://four.quartz.jzhao.xyz/Windows/windows-server-添加开机不用登录自启动服务</guid>
+    <description>服务器管理器 ~&gt; 工具（右上角） ~&gt; 任务计划程序 ~&gt; 创建任务 设置不登录可运行 设置服务器启动时运行： 指定自启动脚本目录： 启动设置： 上述都设置完成后重启服务器，若预设的服务未启动，可以继续到计划中去查看执行情况： 上图为正常执行的结果，若执行报错“任务尚未运行（0x41303）”的状态 打开“本地安全策略-&gt;安全设置-&gt;本地策略-&gt;用户权限分配”： 2、在右侧列表双击“作为批处理作业登录”： 点击“添加用户或组”按钮，将执行批处理作业的用户添加进去。.</description>
+    <pubDate>Sat, 05 Aug 2023 07:03:51 GMT</pubDate>
+  </items><items>
+    <title>windows下使用makefile</title>
+    <link>https://four.quartz.jzhao.xyz/Windows/windows下使用makefile</link>
+    <guid>https://four.quartz.jzhao.xyz/Windows/windows下使用makefile</guid>
+    <description>1 Makefile 一个工程中的源文件不计其数，其按类型、功能、模块分别放在若干个目录中，makefile定义了一系列的规则来指定，哪些文件需要先编译，哪些文件需要后编译，哪些文件需要重新编译，甚至于进行更复杂的功能操作，因为 makefile就像一个 Shell脚本一样，其中也可以执行操作系统的 命令。 2 MinGW MinGW，是Minimalist GNUforWindows的缩写。它是一个可自由使用和自由发布的Windows特定 头文件和使用GNU工具集导入库的集合，允许你在 GNU/ Linux和 Windows平台生成本地的Windows程序而不需要第三方C运行时（C Runtime）库。MinGW 是一组包含文件和端口库，其功能是允许控制台模式的程序使用微软的标准C运行时（C Runtime）库（ MSVCRT.</description>
+    <pubDate>Tue, 08 Aug 2023 06:30:41 GMT</pubDate>
+  </items><items>
+    <title>右键菜单，用VSCode打开文件和文件夹</title>
+    <link>https://four.quartz.jzhao.xyz/Windows/右键菜单-用VSCode打开文件和文件夹</link>
+    <guid>https://four.quartz.jzhao.xyz/Windows/右键菜单-用VSCode打开文件和文件夹</guid>
+    <description>修改注册表 § 右键打开文件 § 1, Win+R 打开运行，输入regedit，打开注册表，找到HKEY_CLASSES_ROOT\*\shell分支，如果没有shell分支，则在*下点击右键，选择“新建－项”，建立shell分支。 2, 在shell下新建“VisualCode”项，在右侧窗口的“默认”双击，在数据里输入“用VSCode打开”。这是右键上显示的文字，可以随便写，只是为了方便查看 3, 在“VisualCode”下再新建Command项，在右侧窗口的“默认”键值栏内输入程序所在的安装路径，我的是：&quot;D:\anzhuang\Microsoft VS Code\Code.</description>
+    <pubDate>Tue, 08 Aug 2023 06:30:49 GMT</pubDate>
+  </items><items>
+    <title>手动安装wsl2-ubuntu20(指定安装位置)--小亮yuu</title>
+    <link>https://four.quartz.jzhao.xyz/Windows/手动安装wsl2-ubuntu20-指定安装位置-小亮yuu</link>
+    <guid>https://four.quartz.jzhao.xyz/Windows/手动安装wsl2-ubuntu20-指定安装位置-小亮yuu</guid>
+    <description>系统版本: win10家庭中文版-20H2 1、检查windows版本 若要更新到 WSL 2，需要运行 Windows 10。 对于 x64 系统：版本 1903 或更高版本，采用 内部版本 18362 或更高版本。 对于 ARM64 系统：版本 2004 或更高版本，采用 内部版本 19041 或更高版本。 低于 18362 的版本不支持 WSL 2。 使用 Windows Update 助手更新 Windows 版本。 小亮的是x64版本20H2，可以安装wsl2。 原文地址: 15506352.</description>
+    <pubDate>Tue, 08 Aug 2023 06:30:52 GMT</pubDate>
+  </items><items>
+    <title>桌面窗口管理器占用内存过高 - 解决方案</title>
+    <link>https://four.quartz.jzhao.xyz/Windows/桌面窗口管理器占用内存过高-解决方案</link>
+    <guid>https://four.quartz.jzhao.xyz/Windows/桌面窗口管理器占用内存过高-解决方案</guid>
+    <description>问题 § 桌面窗口管理器英文名为Desktop Window Manager，简称DWM，后文使用简称来描述桌面窗口管理器。在2020年以后发布的Win10系统版本中，例如20H1（2004）、20H2、等等，DWM存在内存泄露问题，会占用大量内存，本人40G内存被DWM占用4G的内存，如下图。 关于原因方面，有2个可能，1个是英特尔核心显卡驱动的原因，1个是微软系统的原因。有人发现没有核显也出现了DWM内存泄露的问题，因此大概率是微软系统的原因。 后果 § 若放任该问题不管，则DWM占用的内存会越来越高，后果及其严重，最直接的影响便是内存不足。同时，还会使电脑发热、卡顿、占用CPU使用率。若玩游戏，则出现的掉帧、发热、卡顿现象更为严重，甚至会造成游戏闪退或电脑系统崩溃。因此强烈建议各位解决该问题。 解决方案 § 概述 § 目前的解决方案有多种，不想详细了解以下各个方案的各位，可以直接查看升级核显驱动方案，强烈推荐各位使用该方案，因为该方案可以永久性从根源解决问题。 结束进程（不推荐） § 这是一种临时解决方案，需要在任务管理器中手动结束DWM进程。该方案的优点很明显，就是方便快速。但缺点也很明显，就是无法永久性解决问题，DWM还是存在内存泄露问题，每次占用内存过高都需要手动清理。下面介绍步骤： 右键任务栏打开任务管理器，点击任务管理器的名称部分使进程按照名称升序排列，在列表最后可以找到DWM进程（因为Z排序在最后），即桌面窗口管理器进程，选中该进程，如下图。 点击右下角的结束任务按钮，DWM进程的内存将会被释放。 注意： 结束任务后系统可能会暂时黑屏，但会自动恢复，不用担心。 关闭快速启动（不推荐） § 该方案有人说好用，但本人即使关闭快速启动后问题依旧没有解决。各位可以自行尝试，也可以直接查看升级核显驱动的推荐方案。 步骤： 打开控制面板，进入电源选项，点击左侧选择电源按钮的功能。 点击更改当前不可用设置，取消勾选启用快速启动，点击保存修改，如下图。 升级核显驱动（推荐） § 推荐各位使用该方案，因为该方案可以永久性解决问题。前段时间英特尔发布的 Intel 核显驱动 30.</description>
+    <pubDate>Tue, 08 Aug 2023 06:30:55 GMT</pubDate>
   </items><items>
     <title>Architecture</title>
     <link>https://four.quartz.jzhao.xyz/advanced/architecture</link>
@@ -192,5 +378,41 @@
     <guid>https://four.quartz.jzhao.xyz/tags/component</guid>
     <description>Want to create your own custom component? Check out the advanced guide on creating components for more information.</description>
     <pubDate>Mon, 14 Aug 2023 08:54:36 GMT</pubDate>
+  </items><items>
+    <title>How To Be Successful → 30 条</title>
+    <link>https://four.quartz.jzhao.xyz/其他/How-To-Be-Successful-→-30-条</link>
+    <guid>https://four.quartz.jzhao.xyz/其他/How-To-Be-Successful-→-30-条</guid>
+    <description>how-to-be-successful 之前看 YC 前总裁、现 OpenAI CEO Sam Altman 的这篇标题简单粗暴的 How To Be Successful ，摘抄出了其中一些观点，一共 30 条，Google 翻译 + 人工修改。 推荐去看全文，虽然标题很鸡血，但其中的一些观点也很有启发性，常看常新，所以就在社交网路上记录一下： 在一个几乎没有人采取真正长远眼光的世界里，市场会丰厚回报那些这样做的人。 自信心是非常强大的，我认识的最成功的人几乎相信自己到了错觉的地步。 自信必须与自我意识相平衡，我曾经讨厌任何形式的批评并积极避免，现在我总是试着假设它是真的，然后决定是否要采取行动。 找到简单、快速的方法，在现实世界中测试这些想法。 “我会失败很多次，但我会真正成功一次”，你必须给自己很多机会才能获得幸运。 我的另一个重要销售技巧是，在重要的时候亲自出现。 大多数人高估风险而低估回报，冒险很重要，因为不可能一直都是对的，你必须尝试很多事情，并随着了解的更多而迅速调整。 你可以跟随你的直觉，花时间做一些可能真的很有趣的事情。 尽可能长时间地保持廉价和灵活的生活是一种有效的方法，但显然需要权衡取舍。 做正确的事比工作好几个小时重要得多，大多数人将大部分时间浪费在无关紧要的事情上。 一旦你弄清楚了该做什么，就势不可挡地快速完成其中一小部分优先事项。 你必须弄清楚如何努力工作而不精疲力尽，几乎总能奏效的一个方法是，找到你喜欢花很多时间在一起的人一起做的工作。 事实上，工作耐力似乎是长期成功的最大因素之一。 如果你在一个重要问题上取得进展，就会有源源不断的人帮助你，让自己变得更有野心，不要害怕从事真正想从事的工作。 跟随你的好奇心，对你来说令人兴奋的事情，对其他人来说往往也会令人兴奋。 一个很大的秘密是，你可以以惊人的比例让世界屈服于你的意志 —— 大多数人甚至不去尝试，只是接受事情本来的样子。 人们拥有使事情发生的巨大能力，自我怀疑、过早放弃、不够努力的结合使大多数人无法发挥他们的潜力。 设法生存足够长的时间，好运将如愿以偿。 要任性，就必须乐观。这可通过实践提升，我从未见过一个非常成功的悲观者。 伟大的工作需要团队，建立一个有才华的网络（紧密或松散）是伟大事业的重要组成部分，建立网络的有效方法是尽可能多地帮助人们。 每个人在某件事情上都会比其他人做得更好，用你的长处定义自己，而不是你的弱点。 最简单的学习方法就是结识很多人，并记录谁给你留下了深刻印象，谁没有。请记住，不要高估经验或当前成就。 我小时候最大的误解是以为人们靠高薪致富，尽管有一些例外（例如艺人），但在福布斯榜单历史上，几乎没有人拿过薪水。 让事物快速增值的最佳方法是大规模生产人们想要的东西。 大多人靠外部驱动，他们做事是想给别人留下深刻印象，这很糟糕。 你会非常在意他人是否认为你在做正确的事，你会非常专注于跟上他人的脚步，这会阻止你做真正有趣的事。 我认识的最成功的人主要靠内部驱动，他们所做的事是为了给自己留下深刻印象，因为他们觉得有必要让世界发生一些事情。 这就是为何动机如此重要，这是我试图了解他人的第一件事，正确动机很难定义，但看到时你就会知道。 在你不痴迷的任何事情上都很难取得巨大成功。 机会分配如此不均，显然是令人难以置信的耻辱和浪费，但我亲眼目睹很多人一出生就面临糟糕筹码，却取得难以置信的成功，从而知道这是可能的。 123 .</description>
+    <pubDate>Tue, 08 Aug 2023 06:29:55 GMT</pubDate>
+  </items><items>
+    <title>S905L3A 刷机教程与资源整理 (N1 半价代替品)</title>
+    <link>https://four.quartz.jzhao.xyz/其他/S905L3A-刷机教程与资源整理-N1-半价代替品</link>
+    <guid>https://four.quartz.jzhao.xyz/其他/S905L3A-刷机教程与资源整理-N1-半价代替品</guid>
+    <description>可以刷 armbian, coreelec , emuelec, openwrt ,个人亲测刷了前 3 个,效果可以看文尾截图. CPU 支持 aes 指令,可以 ss 硬解. 配置: § UNT M403A: S905L3A, 4 核 1.9 GHz, GPU G31 N1: S905D, 4 核 1.</description>
+    <pubDate>Tue, 08 Aug 2023 06:29:57 GMT</pubDate>
+  </items><items>
+    <title>PM更新包 | PM-Lav codec ball 更新日志 绿色版</title>
+    <link>https://four.quartz.jzhao.xyz/软件/PM更新包-PM-Lav-codec-ball-更新日志-绿色版</link>
+    <guid>https://four.quartz.jzhao.xyz/软件/PM更新包-PM-Lav-codec-ball-更新日志-绿色版</guid>
+    <description> PM更新包是一款自定义强，自由度高，功能齐全，操作简单的播放器DIY整合包，也是一个自用的绿色版。包含了PotPlayer（已精简无用组件）、MPC-HC、LAVFilters等主流的播放组件，支持简繁英三语切换。 提供配置工具，支持傻瓜式一键设置（可选），连小白也能轻松使用。 PM-Lav codec ball 下载之前，建议先看说明：传送门（有任何疑问也请先看一看说明） 解压示例图： （向导是为了更方便选择，请不要怀疑它的绿色属性ԅ(¯﹃¯ԅ)） 版本概括： PotPlayer 1.</description>
+    <pubDate>Tue, 08 Aug 2023 06:31:12 GMT</pubDate>
+  </items><items>
+    <title>RunningCheese Edge 108.0 稳定版</title>
+    <link>https://four.quartz.jzhao.xyz/软件/RunningCheese-Edge-绿色版</link>
+    <guid>https://four.quartz.jzhao.xyz/软件/RunningCheese-Edge-绿色版</guid>
+    <description> 多年以后，面对统计表，谷歌会回想起当年称霸浏览器市场的荣光。 2018 年 12 月 8 日 微软宣布 Edge 浏览器放弃自家的 EdgeHTML 内核，转而使用谷歌的 Chromium 内核，表明了向自己的对手投降。时隔两年，微软终于推出了 Edge 浏览器正式版，那条搅动浏览器市场的“鲶鱼”也终于出现了。 一、Edge 浏览器使用体验 § 1、浏览器内核。 浏览器内核是重中之重，简单来说，新版 Edge 浏览器，就是微软魔改了谷歌已经研发了十几年的 Chrome 浏览器。所以 Chrome 有的功能，Edge 会有，Chrome 有的优点，Edge 也会有。 比如超快的网页加载速度，全面的兼容性，当然还有丰富的拓展库，虽然 Edge 浏览器目前自身的应用商店拓展数量极少，但好在支持从 Chrome 的应用商店上安装拓展。 2、界面设计。 要说 Edge 的界面设计如何，我觉得可以用“简洁大气”四个字来概括。无论是菜单还是图标，都明显是冲着跨平台多设备使用去的，所以整体的 UI 看上去比较“大”，这也是为触屏设备而设计的。 但缺点也明显，Edge 没有为普通的屏幕做相应优化，比如在我的 19 寸 1080P 的屏幕里就显得比较“粗大”，没有在 2K、4K 屏幕下的那种精致感。可供用户自定义的选项也很少，不支持主题皮肤，内置的深色主题也像是一个半成品。 3、多平台支持。 Edge 浏览器已经上线了所有平台。 浏览器登陆使用的是微软服务框架，解决了国内用户无法正常使用谷歌服务的问题。对于国内用户来说，想找一个“纯粹”的浏览器同步服务，除了 Firefox 外，现在又多了一个选择。 4、大声朗读。 如果要问有没有什么功能可以让用户感到惊喜，那么“大声朗读”会第一个被提到。它的语音仿真程度真的很高，无论是中英文切换，还是语气停顿都恰到好处，细品，你甚至还觉到它有情感，让人听起来十分愉悦。 5、阅读模式。 Edge 浏览器自带的阅读模式也十分优秀，或者可以说是目前最优秀的。不仅支持调整字体和颜色，特有的“语法工具”还可以显示名词、动词、形容词，对于英语阅读很有帮助。 6、翻译功能。 和 Chrome 浏览器一样，Edge 浏览器也内置了自家的必应翻译。虽然整体水平不如谷歌翻译，但应付一般的网页翻译还是绰绰有余的，而且翻译速度快，翻译是将文字直接替换为中文，从观感上看体验更好。 7、缺点和不足。 选择是有代价的，既然选择了 Chromium 内核，那么它的优点和缺点，Edge 浏览器也都会一并拥有。比如内存占用大、字体渲染发虚、功能限制多等问题 Edge 也会有。 新版 Edge 浏览器甚至还把旧版 Edge 浏览器的诸多优势也一并丢弃了，比如旧版 Edge 超快的启动速度、低能耗、低内存占用、清晰的字体渲染、还有绝佳的 PDF 阅读体验也都不复存在了。 8、总结 总的来说，Edge 浏览器是一款“微软化”的 Chrome 浏览器，也是一款可以比肩 Chrome 的浏览器。 二、RunningCheese Edge 定制版 § 新版 Edge 浏览器安装后会自动卸载旧版 Edge，无法像之前那样新旧共存，所以我制作了一个 Edge 定制版。 特色内容： 1、最新 Chroium 内核，采用了 GreenChrome 的便携方式。 2、操作逻辑与之前的 Chrome、Firefox 定制版浏览器保持一致。 3、各项功能均已配置完成，可以用作日常使用。 4、便携版，不会与系统自身就有的 Edge 冲突。 下载链接：7bzA-wzxOd 使用手册：chrome-usage（内核相同，大部分使用方法也相同）。 三、RunningCheese Edge 更新 § 更新内容： 此次更新：cV4a7eL3qcNZQTRIjg97BQ 历史更新：100.</description>
+    <pubDate>Tue, 08 Aug 2023 06:31:07 GMT</pubDate>
+  </items><items>
+    <title>【黑苹果】macOS 12 Monterey 原版 OC 引导安装教程</title>
+    <link>https://four.quartz.jzhao.xyz/黑苹果/黑苹果-macOS-12-Monterey-原版-OC-引导安装教程</link>
+    <guid>https://four.quartz.jzhao.xyz/黑苹果/黑苹果-macOS-12-Monterey-原版-OC-引导安装教程</guid>
+    <description>最新原版黑苹果安装教程，图文并茂简单详尽。附带安装工具、原版引导镜像及各电脑EFI驱动合集，图片较多，请耐心等待加载。 远程服务：点击开始远程 视频教程：点击查看视频 准备工作： § U盘： 大于等于16GB的U盘 镜像： 可引导 macOS 原版镜像 工具： Etcher（刻录镜像）、DiskGenius（分区、引导）、EFI驱动文件 安装工具获取链接：macx 提取码：qs05 安装镜像百度网盘：macx 提取码：macx 安装镜像天翼云盘：RF7Nj26JF7nq 一、刻录镜像 § 1、将您的U盘插入电脑，为保证成功，首先将U盘以默认值格式化一次； 2.</description>
+    <pubDate>Tue, 08 Aug 2023 06:31:03 GMT</pubDate>
+  </items><items>
+    <title>黑苹果工具和驱动下载</title>
+    <link>https://four.quartz.jzhao.xyz/黑苹果/黑苹果工具和驱动下载</link>
+    <guid>https://four.quartz.jzhao.xyz/黑苹果/黑苹果工具和驱动下载</guid>
+    <description>黑苹果工具和驱动下载 § 360驱动大师.zipwindows的360驱动大师 AMIBIOS修改工具.rarAMI BIOS修改工具 AiDA64Business.zipACPI提取工具 AtiFlash.zipA卡刷BIOS工具 BIOS工具.zipBIOS提取工具包 BOOTICE.zipUEFI修改工具，制作黑苹果legacy启动盘 Broadcom_drivers.</description>
+    <pubDate>Tue, 08 Aug 2023 06:31:00 GMT</pubDate>
   </items>
   </rss>
